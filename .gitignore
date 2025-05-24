@@ -1,0 +1,17 @@
+
+# Ignore Python and Django stuff
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+env/
+venv/
+db.sqlite3
+*.sqlite3
+*.log
+
+# Ignore secret environment variables
+.env
+
+# VS Code config files
+.vscode/
