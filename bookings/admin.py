@@ -3,15 +3,14 @@ from .models import Customer, Table, Booking, Cancellation, Feedback, MenuItem
 
 # Register your models here.
 
-
-@admin.site.register(Customer)
+@admin.register(Customer)
 class CustomerAdmin(admin.ModelAdmin):
     list_display = ('name', 'email', 'phone_number', 'created_at')
     search_fields = ('name', 'email')
     list_filter = ('created_at',)
 
 
-@admin.site.register(Table)
+@admin.register(Table)
 class TableAdmin(admin.ModelAdmin):
     list_display = ('table_number', 'seats', 'is_available', 'created_at')
     search_fields = ('table_number',)
@@ -34,13 +33,13 @@ class CancellationAdmin(admin.ModelAdmin):
 
 @admin.register(Feedback)
 class FeedbackAdmin(admin.ModelAdmin):
-    list_display = ('customer', 'rating', 'comment', 'created_at')
+    list_display = ('customer', 'rating', 'comments', 'created_at')
     search_fields = ('customer__email', 'comment')
     list_filter = ('rating', 'created_at')
 
 
 @admin.register(MenuItem)
 class MenuItemAdmin(admin.ModelAdmin):
-    list_display = ('name', 'price', 'available',)
+    list_display = ('name', 'price', 'is_available',)
     search_fields = ('name',)
-    list_filter = ('available',)
+    list_filter = ('is_available',)
