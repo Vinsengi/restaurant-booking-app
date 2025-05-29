@@ -64,8 +64,10 @@ def public_booking_view(request):
                     if not available_tables.exists():
                         messages.error(
                             request,
-                            "Sorry, all tables are fully booked around that time. "
-                            "Please try another slot (minimum 2-hour interval)."
+                            "Sorry, all tables are booked at that time. "
+                            "Please try another slot "
+                            "(minimum 2-hour "
+                            "interval)."
                         )
                         return render(
                             request,
@@ -73,7 +75,9 @@ def public_booking_view(request):
                             {
                                 'form': form,
                                 'available_tables': [],
-                                'conflicting_table_ids': list(conflicting_bookings),
+                                'conflicting_table_ids': list(
+                                    conflicting_table_ids
+                                ),
                                 'no_availability': True
                             }
                         )
@@ -90,21 +94,28 @@ def public_booking_view(request):
                         special_requests=special_requests
                     )
 
-                    return redirect(
-                        reverse('booking_success') +
-                        f'?booking_id={new_booking.id}'
+                    booking_success_url = (
+                        f"{reverse('booking_success')}"
+                        f"?booking_id={new_booking.id}"
                     )
-
+                    return redirect(booking_success_url)
             except IntegrityError:
                 messages.error(
                     request,
-                    "Oops! That table was just booked by someone else. Please try again."
+                    (
+                        "Oops! That table was just booked by someone else. "
+                        "Please try again."
+                    )
                 )
                 return redirect('public_booking')
 
         else:
             messages.error(request, "Please correct the errors below.")
-            return render(request, 'bookings/booking_form.html', {'form': form})
+            return render(
+                request,
+                'bookings/booking_form.html',
+                {'form': form}
+            )
 
     else:
         form = PublicBookingForm()
