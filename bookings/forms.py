@@ -1,5 +1,5 @@
 from django import forms
-from .models import Booking
+from .models import Booking, Customer, Table
 
 
 class BookingForm(forms.ModelForm):
@@ -64,3 +64,18 @@ class BookingForm(forms.ModelForm):
                 'invalid': 'Please enter a valid time.',
             },
         }
+
+
+class PublicBookingForm(forms.Form):
+    name = forms.CharField(max_length=100, label='Your Name')
+    email = forms.EmailField(label='Email Address')
+    phone_number = forms.CharField(max_length=15, label='Phone Number')
+    number_of_guests = forms.IntegerField(min_value=1, label='Number of Guests')
+    table = forms.ModelChoiceField(queryset=Table.objects.all(), label='Select Table')
+    booking_date = forms.DateField(widget=forms.DateInput(attrs={'type': 'date'}))
+    booking_time = forms.TimeField(widget=forms.TimeInput(attrs={'type': 'time'}))
+    special_requests = forms.CharField(
+        widget=forms.Textarea(attrs={'rows': 3}),
+        required=False,
+        label='Special Requests'
+    )

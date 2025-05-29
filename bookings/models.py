@@ -53,7 +53,7 @@ class Booking(models.Model):
 
     def save(self, *args, **kwargs):
         # Automatically set the status based on the booking date
-        if self.booking_date < timezone.now():
+        if self.booking_date < timezone.now().date():
             self.status = 'cancelled'  # Automatically cancel bookings in the past 
         super().save(*args, **kwargs)
 
