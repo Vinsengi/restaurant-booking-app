@@ -11,6 +11,16 @@
 <div class="container">
     <h2 class="mb-4">Book a Table</h2>
 
+    {% if messages %}
+        <div class="mb-3">
+            {% for message in messages %}
+                <div class="alert alert-{{ message.tags }}">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+
     <form method="post" novalidate>
         {% csrf_token %}
 
