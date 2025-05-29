@@ -5,6 +5,7 @@ from django.contrib import messages
 from django.db import IntegrityError, transaction
 from datetime import datetime, timedelta
 from django.db.models import Q
+from django.urls import reverse
 
 
 def public_booking_view(request):
@@ -72,7 +73,7 @@ def public_booking_view(request):
                             {
                                 'form': form,
                                 'available_tables': [],
-                                'conflicting_table_ids': list(conflicting_table_ids),
+                                'conflicting_table_ids': list(conflicting_bookings),
                                 'no_availability': True
                             }
                         )
@@ -80,7 +81,7 @@ def public_booking_view(request):
                     selected_table = available_tables.first()
 
                     # 📝 Create the booking
-                    Booking.objects.create(
+                    new_booking = Booking.objects.create(
                         customer=customer,
                         table=selected_table,
                         number_of_guests=number_of_guests,
@@ -89,7 +90,10 @@ def public_booking_view(request):
                         special_requests=special_requests
                     )
 
-                    return redirect('booking_success')
+                    return redirect(
+                        reverse('booking_success') +
+                        f'?booking_id={new_booking.id}'
+                    )
 
             except IntegrityError:
                 messages.error(
@@ -114,4 +118,21 @@ def public_booking_view(request):
 
 
 def booking_success(request):
-    return render(request, 'bookings/booking_success.html')
+    booking_id = request.GET.get('booking_id')
+    booking = None
+    if booking_id:
+        try:
+            booking = (
+                Booking.objects
+                .select_related('table')
+                .get(
+                    id=booking_id
+                )
+            )
+        except Booking.DoesNotExist:
+            booking = None
+    return render(
+        request,
+        'bookings/booking_success.html',
+        {'booking': booking}
+    )
