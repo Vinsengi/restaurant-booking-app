@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from .models import Customer, Booking, Table
 from .forms import PublicBookingForm
 from django.contrib import messages
-from django.db import IntegrityError
+from django.db import IntegrityError, transaction
 from datetime import datetime, timedelta
 from django.db.models import Q
 
@@ -20,68 +20,97 @@ def public_booking_view(request):
             number_of_guests = form.cleaned_data['number_of_guests']
             special_requests = form.cleaned_data.get('special_requests', '')
 
-            # Customer lookup or creation
-            customer = (
-                Customer.objects.filter(email=email).first() or
-                Customer.objects.filter(phone_number=phone).first()
-            )
-            if customer:
-                if customer.name != name:
-                    customer.name = name
-                    customer.save()
-            else:
-                customer = Customer.objects.create(
-                    name=name, email=email, phone_number=phone
-                )
-            
+            try:
+                with transaction.atomic():
+                    # 🔍 Customer lookup or creation
+                    customer = (
+                        Customer.objects.filter(email=email).first() or
+                        Customer.objects.filter(phone_number=phone).first()
+                    )
+                    if customer:
+                        if customer.name != name:
+                            customer.name = name
+                            customer.save()
+                    else:
+                        customer = Customer.objects.create(
+                            name=name, email=email, phone_number=phone
+                        )
 
-            # Define time window: +/- 2 hours
-            start_time = (datetime.combine(booking_date, booking_time) - timedelta(hours=2)).time()
-            end_time = (datetime.combine(booking_date, booking_time) + timedelta(hours=2)).time()
+                    # ⏳ Define time window: +/- 2 hours
+                    start_time = (
+                        datetime.combine(booking_date, booking_time) -
+                        timedelta(hours=2)
+                    ).time()
+                    end_time = (
+                        datetime.combine(booking_date, booking_time) +
+                        timedelta(hours=2)
+                    ).time()
 
+                    # ❌ Get conflicting bookings in the window
+                    conflicting_table_ids = Booking.objects.filter(
+                        booking_date=booking_date,
+                        booking_time__gte=start_time,
+                        booking_time__lte=end_time
+                    ).values_list('table_id', flat=True)
 
-            # Filter conflicting bookings that fall within this time window on the same date
-            conflicting_bookings = Booking.objects.filter(
-                booking_date=booking_date,
-                booking_time__gte=start_time,
-                booking_time__lte=end_time
-            ).values_list('table_id', flat=True)
+                    # ✅ Find available tables not in conflict
+                    available_tables = Table.objects.filter(
+                        seats__gte=number_of_guests
+                    ).exclude(
+                        id__in=conflicting_table_ids
+                    ).order_by('seats')
 
-            available_tables = (
-                Table.objects
-                .filter(seats__gte=number_of_guests)
-                .exclude(id__in=conflicting_bookings)
-                .order_by('seats')
-            )
+                    if not available_tables.exists():
+                        messages.error(
+                            request,
+                            "Sorry, all tables are fully booked around that time. "
+                            "Please try another slot (minimum 2-hour interval)."
+                        )
+                        return render(
+                            request,
+                            'bookings/booking_form.html',
+                            {
+                                'form': form,
+                                'available_tables': [],
+                                'conflicting_table_ids': list(conflicting_table_ids),
+                                'no_availability': True
+                            }
+                        )
 
-            if not available_tables.exists():
+                    selected_table = available_tables.first()
+
+                    # 📝 Create the booking
+                    Booking.objects.create(
+                        customer=customer,
+                        table=selected_table,
+                        number_of_guests=number_of_guests,
+                        booking_date=booking_date,
+                        booking_time=booking_time,
+                        special_requests=special_requests
+                    )
+
+                    return redirect('booking_success')
+
+            except IntegrityError:
                 messages.error(
                     request,
-                    "Sorry, all tables are fully booked around that time. "
-                    "Please try another slot (minimum 2-hour interval)."
+                    "Oops! That table was just booked by someone else. Please try again."
                 )
                 return redirect('public_booking')
 
-            table = available_tables.first()
-
-            # Create booking
-            Booking.objects.create(
-                customer=customer,
-                table=table,
-                number_of_guests=number_of_guests,
-                booking_date=booking_date,
-                booking_time=booking_time,
-                special_requests=special_requests
-            )
-            return redirect('booking_success')
         else:
-            # ❌ Invalid form – show errors
             messages.error(request, "Please correct the errors below.")
             return render(request, 'bookings/booking_form.html', {'form': form})
+
     else:
         form = PublicBookingForm()
 
-    return render(request, 'bookings/booking_form.html', {'form': form})
+    return render(request, 'bookings/booking_form.html', {
+        'form': form,
+        'available_tables': None,
+        'conflicting_table_ids': [],
+        'no_availability': False
+    })
 
 
 def booking_success(request):
