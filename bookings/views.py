@@ -33,15 +33,12 @@ def public_booking_view(request):
                 customer = Customer.objects.create(
                     name=name, email=email, phone_number=phone
                 )
-
-            # Find available table
-            # Convert booking_time (string) to time object
-            booking_time_obj = datetime.strptime(booking_time, "%H:%M").time()
+            
 
             # Define time window: +/- 2 hours
-            start_time = (datetime.combine(datetime.today(), booking_time_obj) - timedelta(hours=2)).time()
-            end_datetime = datetime.combine(datetime.today(), booking_time_obj) + timedelta(hours=2)
-            end_time = end_datetime.time()
+            start_time = (datetime.combine(booking_date, booking_time) - timedelta(hours=2)).time()
+            end_time = (datetime.combine(booking_date, booking_time) + timedelta(hours=2)).time()
+
 
             # Filter conflicting bookings that fall within this time window on the same date
             conflicting_bookings = Booking.objects.filter(
@@ -80,6 +77,7 @@ def public_booking_view(request):
         else:
             # ❌ Invalid form – show errors
             messages.error(request, "Please correct the errors below.")
+            return render(request, 'bookings/booking_form.html', {'form': form})
     else:
         form = PublicBookingForm()
 

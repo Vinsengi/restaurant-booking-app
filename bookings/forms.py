@@ -1,5 +1,6 @@
 from django import forms
 from .models import Booking, Customer, Table
+from django.core.validators import RegexValidator
 
 
 #  Admin/ Internal form
@@ -78,7 +79,9 @@ class PublicBookingForm(forms.Form):
     phone_number = forms.CharField(
         label="Phone Number",
         max_length=20,
+        validators=[RegexValidator(r'^\d{7,15}$', message="Enter a valid phone number (7–15 digits).")],
         widget=forms.TextInput(attrs={'class': 'form-control'}),
+        help_text="Enter digits only, no spaces or symbols"
     )
 
     number_of_guests = forms.IntegerField(
