@@ -1,5 +1,6 @@
 from django.contrib import admin
 from .models import Customer, Table, Booking, Cancellation, Feedback, MenuItem
+from datetime import datetime, timedelta
 
 # Register your models here.
 
@@ -19,9 +20,36 @@ class TableAdmin(admin.ModelAdmin):
 
 @admin.register(Booking)
 class BookingAdmin(admin.ModelAdmin):
-    list_display = ('customer', 'table', 'booking_date', 'booking_time', 'status', 'created_at')
+    list_display = ('customer', 'table', 'booking_date', 'booking_time', 'status', 'conflict_warning', 'created_at')
     search_fields = ('customer__email', 'table__table_number')
     list_filter = ('table', 'booking_date')
+
+    def conflict_warning(self, obj):
+        if not obj.booking_date or not obj.booking_time:
+            return "N/A"
+        """
+        Check for conflicting bookings within a 2-hour window.
+        Returns True if there are conflicting bookings, otherwise False.
+        """
+        # Check for conflicting bookings within a 2-hour window
+        start_time = (
+            datetime.combine(obj.booking_date, obj.booking_time) 
+            - timedelta(hours=2)
+        ).time()
+        end_time = (
+            datetime.combine(obj.booking_date, obj.booking_time) 
+            + timedelta(hours=2)
+        ).time()
+        # Find bookings that conflict with the current booking
+        # within the same date and time range
+        conflicting_bookings = Booking.objects.filter(
+            booking_date=obj.booking_date,
+            booking_time__gte=start_time,
+            booking_time__lte=end_time
+        ).exclude(id=obj.id)
+        return conflicting_bookings.exists()
+    conflict_warning.short_description = 'Conflict Warning'
+    conflict_warning.boolean = True
 
 
 @admin.register(Cancellation)

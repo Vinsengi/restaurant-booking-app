@@ -64,14 +64,52 @@ class BookingForm(forms.ModelForm):
 
 
 class PublicBookingForm(forms.Form):
-    name = forms.CharField(max_length=100, label='Your Name')
-    email = forms.EmailField(label='Email Address')
-    phone_number = forms.CharField(max_length=15, label='Phone Number')
-    number_of_guests = forms.IntegerField(min_value=1, label='Number of Guests')
-    booking_date = forms.DateField(widget=forms.DateInput(attrs={'type': 'date'}))
-    booking_time = forms.TimeField(widget=forms.TimeInput(attrs={'type': 'time'}))
+    name = forms.CharField(
+        label="Your Name",
+        max_length=100,
+        widget=forms.TextInput(attrs={'class': 'form-control'}),
+    )
+
+    email = forms.EmailField(
+        label="Email Address",
+        widget=forms.EmailInput(attrs={'class': 'form-control'}),
+    )
+
+    phone_number = forms.CharField(
+        label="Phone Number",
+        max_length=20,
+        widget=forms.TextInput(attrs={'class': 'form-control'}),
+    )
+
+    number_of_guests = forms.IntegerField(
+        label="Number of Guests",
+        min_value=1,
+        widget=forms.NumberInput(attrs={'class': 'form-control'}),
+        help_text="Minimum of 1 guest required"
+    )
+
+    booking_date = forms.DateField(
+        label="Booking Date",
+        widget=forms.DateInput(attrs={
+            'type': 'date',
+            'class': 'form-control'
+        })
+    )
+
+    booking_time = forms.TimeField(
+        label="Booking Time",
+        widget=forms.TimeInput(attrs={
+            'type': 'time',
+            'class': 'form-control'
+        }),
+        help_text="Format: HH:MM"
+    )
+
     special_requests = forms.CharField(
-        widget=forms.Textarea(attrs={'rows': 3}),
+        label="Special Requests (optional)",
         required=False,
-        label='Special Requests'
+        widget=forms.Textarea(attrs={
+            'class': 'form-control',
+            'rows': 3,
+        })
     )
