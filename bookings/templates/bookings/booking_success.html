@@ -11,10 +11,10 @@
         <h2 class="mb-3">🎉 Booking Confirmed!</h2>
 
         {% if booking %}
-            <p><strong>Table:</strong> {{ booking.table.name }}</p>
-            <p><strong>Date:</strong> {{ booking.booking_date }}</p>
-            <p><strong>Time:</strong> {{ booking.booking_time|time:"H:i" }}</p>
-            <p><strong>Guests:</strong> {{ booking.number_of_guests }}</p>
+            <p><strong>This Table number is reserved for you:</strong> {{ booking.table.table_number }}</p>
+            <p><strong>We are looking forward to seeing you on :</strong> {{ booking.booking_date|date:"F j, Y" }} at <strong>Time:</strong> {{ booking.booking_time|time:"H:i" }}</p>
+            <p><strong> We have noted that you will be:</strong> {{ booking.number_of_guests }} guests in total</p>
+            <p><strong><em>Booking made on:</strong> {{ booking.created_at }}: Server Time 🏢😊 </em></p>
         {% else %}
             <p>We couldn’t find the booking details, but your reservation has been confirmed.</p>
         {% endif %}

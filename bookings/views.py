@@ -6,6 +6,11 @@ from django.db import IntegrityError, transaction
 from datetime import datetime, timedelta
 from django.db.models import Q
 from django.urls import reverse
+from .email_utils import send_booking_email
+from urllib.parse import urlencode
+import logging
+# Initialize logger
+logger = logging.getLogger(__name__)
 
 
 def public_booking_view(request):
@@ -20,6 +25,13 @@ def public_booking_view(request):
             booking_time = form.cleaned_data['booking_time']
             number_of_guests = form.cleaned_data['number_of_guests']
             special_requests = form.cleaned_data.get('special_requests', '')
+     
+            # Log the booking attempt
+            logger.info(
+                f"Booking attempt: {name}, {email}, {phone}, "
+                f"{booking_date}, at {booking_time}, for {number_of_guests} guests, "
+                f"Special Requests: {special_requests}"
+            )
 
             try:
                 with transaction.atomic():
@@ -93,13 +105,33 @@ def public_booking_view(request):
                         booking_time=booking_time,
                         special_requests=special_requests
                     )
-
-                    booking_success_url = (
-                        f"{reverse('booking_success')}"
-                        f"?booking_id={new_booking.id}"
+                    logger.info(
+                        f"Booking created successfully: {new_booking.id} "
+                        f"for {customer.name} at {booking_date} "
+                        f"at {booking_time} for {number_of_guests} guests."
+                        f"on Table: {selected_table.table_number}"
                     )
+                    try:
+                        send_booking_email(new_booking, customer)
+                    except Exception as e:
+                        logger.exception("Email sending failed.")
+                        messages.warning(
+                            request,
+                            "Booking confirmed, but there was an issue sending the confirmation email."
+                        )
+                    else:
+                        messages.success(
+                            request,
+                            f"Your booking for {booking_date} at {booking_time.strftime('%H:%M')} was successful! A confirmation email has been sent to {email}."
+                    )
+                  
+                    base_url = reverse('booking_success')
+                    query_string = urlencode({'booking_id': new_booking.id})
+                    booking_success_url = f"{base_url}?{query_string}"
                     return redirect(booking_success_url)
+
             except IntegrityError:
+                logger.exception("Booking failed due to integrity error.")
                 messages.error(
                     request,
                     (
@@ -108,24 +140,22 @@ def public_booking_view(request):
                     )
                 )
                 return redirect('public_booking')
-
         else:
+            logger.warning("Invalid form submission.")
             messages.error(request, "Please correct the errors below.")
             return render(
                 request,
                 'bookings/booking_form.html',
                 {'form': form}
             )
-
     else:
         form = PublicBookingForm()
-
-    return render(request, 'bookings/booking_form.html', {
-        'form': form,
-        'available_tables': None,
-        'conflicting_table_ids': [],
-        'no_availability': False
-    })
+        return render(request, 'bookings/booking_form.html', {
+            'form': form,
+            'available_tables': None,
+            'conflicting_table_ids': [],
+            'no_availability': False
+        })
 
 
 def booking_success(request):
@@ -140,7 +170,13 @@ def booking_success(request):
                     id=booking_id
                 )
             )
+            logger.info(
+                f"Booking success view accessed for booking ID: {booking_id}"
+            )
         except Booking.DoesNotExist:
+            logger.warning(
+                f"Booking ID {booking_id} not found."
+            )
             booking = None
     return render(
         request,

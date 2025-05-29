@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Your Table Booking Confirmation</title>
+</head>
+<body>
+    <h2>Hello {{ booking.customer.name }},</h2>
+    <p>Thank you for your booking at our restaurant!</p>
+
+    <p>
+        <strong>Date:</strong> {{ booking.booking_date }}<br>
+        <strong>Time:</strong> {{ booking.booking_time }}<br>
+        <strong>Guests:</strong> {{ booking.number_of_guests }}<br>
+        <strong>Table:</strong> {{ booking.table.table_number }}
+    </p>
+
+    {% if booking.special_requests %}
+        <p><strong>Special Requests:</strong> {{ booking.special_requests }}</p>
+    {% endif %}
+
+    <p>We look forward to seeing you!</p>
+</body>
+</html>
