@@ -2,6 +2,7 @@ from django.db import models
 from django.utils import timezone
 from django.conf import settings
 from django.db import models
+from datetime import datetime
 
 # Create your models here.
 
@@ -52,6 +53,13 @@ class Booking(models.Model):
     # Automatically set the status based on the booking date
 
     def save(self, *args, **kwargs):
+        # Convert string to date object if necessary
+        if isinstance(self.booking_date, str):
+            try:
+                self.booking_date = datetime.strptime(self.booking_date, "%Y-%m-%d").date()
+            except ValueError:
+                self.booking_date = timezone.now().date()  # fallback to today
+            
         # Automatically set the status based on the booking date
         if self.booking_date < timezone.now().date():
             self.status = 'cancelled'  # Automatically cancel bookings in the past 

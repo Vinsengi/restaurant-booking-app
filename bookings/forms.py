@@ -2,13 +2,13 @@ from django import forms
 from .models import Booking, Customer, Table
 
 
+#  Admin/ Internal form
 class BookingForm(forms.ModelForm):
     class Meta:
         model = Booking
         fields = [
             'customer',
             'number_of_guests',
-            'table',
             'booking_date',
             'booking_time',
             'special_requests',
@@ -25,7 +25,6 @@ class BookingForm(forms.ModelForm):
             'number_of_guests': forms.NumberInput(
                 attrs={'min': 1, 'class': 'form-control'}
             ),
-            'table': forms.Select(attrs={'class': 'form-control'}),
             'booking_time': forms.TimeInput(attrs={'type': 'time'}),
         }
         labels = {
@@ -52,9 +51,7 @@ class BookingForm(forms.ModelForm):
                 'required': 'Please enter the number of guests.',
                 'invalid': 'Please enter a valid number of guests.',
             },
-            'table': {
-                'required': 'Please select a table for the booking.',
-            },
+            
             'booking_date': {
                 'required': 'Please select a booking date.',
                 'invalid': 'Please enter a valid date.',
@@ -71,7 +68,6 @@ class PublicBookingForm(forms.Form):
     email = forms.EmailField(label='Email Address')
     phone_number = forms.CharField(max_length=15, label='Phone Number')
     number_of_guests = forms.IntegerField(min_value=1, label='Number of Guests')
-    table = forms.ModelChoiceField(queryset=Table.objects.all(), label='Select Table')
     booking_date = forms.DateField(widget=forms.DateInput(attrs={'type': 'date'}))
     booking_time = forms.TimeField(widget=forms.TimeInput(attrs={'type': 'time'}))
     special_requests = forms.CharField(
