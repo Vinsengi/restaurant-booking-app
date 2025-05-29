@@ -30,6 +30,7 @@ class Table(models.Model):
 
 class Booking(models.Model):
     customer = models.ForeignKey(Customer, on_delete=models.CASCADE)
+    number_of_guests = models.PositiveIntegerField(default=1)
     table = models.ForeignKey(Table, on_delete=models.CASCADE)
     booking_date = models.DateTimeField()
     booking_time = models.TimeField()
