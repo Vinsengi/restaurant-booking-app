@@ -1,0 +1,13 @@
+Hi {{ customer.name }},
+
+Your reservation is confirmed!
+
+Date: {{ booking.booking_date|date:"l, F j, Y" }}
+Time: {{ booking.booking_time|time:"H:i" }}
+Guests: {{ booking.number_of_guests }}
+Table: {{ booking.table.table_number }}
+{% if booking.special_requests %}
+Special Requests: {{ booking.special_requests }}
+{% endif %}
+
+Thank you for choosing our restaurant!
