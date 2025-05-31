@@ -71,7 +71,7 @@ class Cancellation(models.Model):
     booking = models.OneToOneField(Booking, on_delete=models.CASCADE)
     cancellation_date = models.DateTimeField(auto_now_add=True)  # Automatically set the cancellation date when a cancellation is created
     reason = models.TextField(blank=True, null=True)  # Optional field for the reason of cancellation
-    token = models.UUIDField(default=uuid.uuid4, editable=False)
+    token = models.UUIDField(default=uuid.uuid4, editable=False, unique=True)
 
     def __str__(self):
         return (
