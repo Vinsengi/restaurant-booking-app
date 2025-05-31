@@ -183,3 +183,7 @@ def booking_success(request):
         'bookings/booking_success.html',
         {'booking': booking}
     )
+
+
+def home(request):
+    return render(request, 'bookings/home.html')
