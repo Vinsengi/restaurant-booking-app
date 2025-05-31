@@ -2,6 +2,7 @@ import logging
 from django.core.mail import EmailMultiAlternatives
 from django.template.loader import render_to_string
 from django.conf import settings
+from django.urls import reverse
 
 logger = logging.getLogger(__name__)
 
@@ -10,10 +11,18 @@ def send_booking_email(booking, customer):
     subject = 'Booking Confirmation'
     from_email = settings.DEFAULT_FROM_EMAIL
     to_email = customer.email
+    cancel_token = booking.cancellation.token
+    cancel_url = (
+        f"{settings.SITE_URL}{reverse('cancel_booking')}"
+        f"?token={cancel_token}"
+    )
 
     context = {
         'booking': booking,
-        'customer': customer
+        'customer': customer,
+        'cancel_url': cancel_url,
+        'cancel_token': cancel_token,
+        'site_name': settings.SITE_NAME,
     }
 
     # Render both plain text and HTML

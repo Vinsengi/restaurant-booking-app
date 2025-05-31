@@ -1,73 +1,157 @@
 <!DOCTYPE html>
 <html>
-<head>
-    <meta charset="UTF-8">
+  <head>
+    <meta charset="UTF-8" />
     <title>Chez Mama | Booking Confirmation</title>
-</head>
-<body style="font-family: Arial, sans-serif; margin: 0; padding: 0; background-color: #f7f7f7;">
-    <table width="100%" bgcolor="#f7f7f7" cellpadding="0" cellspacing="0" border="0">
-        <tr>
-            <td align="center">
-                <table width="600" cellpadding="40" cellspacing="0" border="0" bgcolor="#ffffff" style="margin: 40px auto; border-radius: 10px; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
-                    <tr>
-                        <td align="center" style="border-bottom: 1px solid #dddddd;">
-                            <h1 style="color: #e67e22; margin-bottom: 0;">Chez Mama Restaurant 🍽️💌</h1>
-                            <h2 style="font-size: 18px; color: aquamarine;">🎉Your Booking Is Confirmed!🍽️</h2>
-                            <p style="font-size: 16px; color: #777;">Thank you, {{ customer.name }}!</p>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <p style="font-size: 16px; color: #555555;">
-                                Here are the details of your reservation:
-                            </p>
-                            <ul style="font-size: 16px; color: #333333; line-height: 1.6;">
-                                <li><strong>Date:</strong> {{ booking.booking_date|date:"l, F j, Y" }}</li>
-                                <li><strong>Time:</strong> {{ booking.booking_time|time:"H:i" }}</li>
-                                <li><strong>Guests:</strong> {{ booking.number_of_guests }}</li>
-                                <li><strong>Table:</strong> Table {{ booking.table.table_number }}</li>
-                                {% if booking.special_requests %}
-                                <li><strong>Special Requests:</strong> {{ booking.special_requests }}</li>
-                                {% endif %}
-                            </ul>
+  </head>
+  <body
+    style="
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f7f7f7;
+    "
+  >
+    <table
+      width="100%"
+      bgcolor="#f7f7f7"
+      cellpadding="0"
+      cellspacing="0"
+      border="0"
+    >
+      <tr>
+        <td align="center">
+          <table
+            width="600"
+            cellpadding="40"
+            cellspacing="0"
+            border="0"
+            bgcolor="#ffffff"
+            style="
+              margin: 40px auto;
+              border-radius: 10px;
+              box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            "
+          >
+            <tr>
+              <td align="center" style="border-bottom: 1px solid #dddddd">
+                <h1 style="color: #e67e22; margin-bottom: 0">
+                  Chez Mama Restaurant 🍽️💌
+                </h1>
+                <h2 style="font-size: 18px; color: aquamarine">
+                  🎉Your Booking Is Confirmed!🍽️
+                </h2>
+                <p style="font-size: 16px; color: #777">
+                  Thank you, {{ customer.name }}!
+                </p>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <p style="font-size: 16px; color: #555555">
+                  Here are the details of your reservation:
+                </p>
+                <ul style="font-size: 16px; color: #333333; line-height: 1.6">
+                  <li>
+                    <strong>Date:</strong> {{ booking.booking_date|date:"l, F j,
+                    Y" }}
+                  </li>
+                  <li>
+                    <strong>Time:</strong> {{ booking.booking_time|time:"H:i" }}
+                  </li>
+                  <li>
+                    <strong>Guests:</strong> {{ booking.number_of_guests }}
+                  </li>
+                  <li>
+                    <strong>Table:</strong> Table {{ booking.table.table_number
+                    }}
+                  </li>
+                  {% if booking.special_requests %}
+                  <li>
+                    <strong>Special Requests:</strong> {{
+                    booking.special_requests }}
+                  </li>
+                  {% endif %}
+                </ul>
 
-                            <p style="font-size: 16px; color: #555555;">
-                                If you have any questions or need to make changes, simply reply to this email.
-                            </p>
+                <p style="font-size: 16px; color: #555555">
+                  If you have any questions or need to make changes, simply
+                  reply to this email.
+                </p>
 
-                            <p style="font-size: 16px; color: #555555;">
-                                We look forward to welcoming you to Chez Mama!
-                            </p>
+                <p style="font-size: 16px; color: #555555">
+                  We look forward to welcoming you to Chez Mama!
+                </p>
+                <hr
+                  style="
+                    margin: 30px 0;
+                    border: none;
+                    border-top: 1px solid #ddd;
+                  "
+                />
+                <p>
+                  If you need to cancel your reservation, click the link below:
+                </p>
+                <p><a href="{{ cancel_url }}">Cancel My Booking</a></p>
 
-                            <hr style="margin: 30px 0; border: none; border-top: 1px solid #ddd;">
+                <hr
+                  style="
+                    margin: 30px 0;
+                    border: none;
+                    border-top: 1px solid #ddd;
+                  "
+                />
 
-                            <table width="100%" cellpadding="0" cellspacing="0">
-                                <tr>
-                                    <td align="left">
-                                        <p style="font-size: 14px; color: #999999;">
-                                            &copy; {{ booking.booking_date|date:"Y" }} Chez Mama. All rights reserved.
-                                        </p>
-                                    </td>
-                                    <td align="right">
-                                        <a href="https://www.linkedin.com/in/vital-nsengiyumva/" target="_blank" style="text-decoration: none;">
-                                            <img src="https://cdn-icons-png.flaticon.com/512/174/174857.png" width="20" alt="LinkedIn" style="vertical-align: middle; margin-right: 6px;">
-                                            <span style="font-size: 14px; color: #0e76a8;">Follow us on LinkedIn</span>
-                                        </a>
-                                    </td>
-                                </tr>
-                            </table>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td align="center" style="padding-top: 30px;">
-                            <a href="https://www.equip-magu.org/en/" style="display: inline-block; padding: 12px 25px; background-color: #e67e22; color: white; text-decoration: none; border-radius: 5px; font-size: 16px;">
-                                Visit Our Website
-                            </a>
-                        </td>
-                    </tr>
+                <table width="100%" cellpadding="0" cellspacing="0">
+                  <tr>
+                    <td align="left">
+                      <p style="font-size: 14px; color: #999999">
+                        &copy; {{ booking.booking_date|date:"Y" }} Chez Mama.
+                        All rights reserved.
+                      </p>
+                    </td>
+                    <td align="right">
+                      <a
+                        href="https://www.linkedin.com/in/vital-nsengiyumva/"
+                        target="_blank"
+                        style="text-decoration: none"
+                      >
+                        <img
+                          src="https://cdn-icons-png.flaticon.com/512/174/174857.png"
+                          width="20"
+                          alt="LinkedIn"
+                          style="vertical-align: middle; margin-right: 6px"
+                        />
+                        <span style="font-size: 14px; color: #0e76a8"
+                          >Follow us on LinkedIn</span
+                        >
+                      </a>
+                    </td>
+                  </tr>
                 </table>
-            </td>
-        </tr>
+              </td>
+            </tr>
+            <tr>
+              <td align="center" style="padding-top: 30px">
+                <a
+                  href="https://www.equip-magu.org/en/"
+                  style="
+                    display: inline-block;
+                    padding: 12px 25px;
+                    background-color: #e67e22;
+                    color: white;
+                    text-decoration: none;
+                    border-radius: 5px;
+                    font-size: 16px;
+                  "
+                >
+                  Visit Our Website
+                </a>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
     </table>
-</body>
+  </body>
 </html>

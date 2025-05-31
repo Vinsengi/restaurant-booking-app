@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from .models import Customer, Booking, Table
+from .models import Customer, Booking, Table, Cancellation
 from .forms import PublicBookingForm
 from django.contrib import messages
 from django.db import IntegrityError, transaction
@@ -8,6 +8,8 @@ from django.db.models import Q
 from django.urls import reverse
 from .email_utils import send_booking_email
 from urllib.parse import urlencode
+from django.http import HttpResponse
+
 import logging
 # Initialize logger
 logger = logging.getLogger(__name__)
@@ -105,6 +107,8 @@ def public_booking_view(request):
                         booking_time=booking_time,
                         special_requests=special_requests
                     )
+                    Cancellation.objects.create(
+                        booking=new_booking)
                     logger.info(
                         f"Booking created successfully: {new_booking.id} "
                         f"for {customer.name} at {booking_date} "
@@ -201,10 +205,20 @@ def menu_view(request):
     return render(request, 'bookings/menu.html')
 
 
-def cancel_booking_view(request, booking_id):
-    return render(
-        request,
-        'bookings/cancel_booking.html')
+def cancel_booking_view(request):
+    token = request.GET.get('token')
+    if not token:
+        return HttpResponseNotFound("Invalid or missing cancellation token.")
+
+    try:
+        cancellation = Cancellation.objects.select_related('booking').get(token=token)
+        booking = cancellation.booking
+        booking.delete()  # or mark as canceled instead
+        messages.success(request, "Your booking has been successfully canceled.")
+    except Cancellation.DoesNotExist:
+        messages.error(request, "Invalid cancellation token.")
+
+    return render(request, 'bookings/cancel_booking.html')
 
 
 def view_bookings(request):
