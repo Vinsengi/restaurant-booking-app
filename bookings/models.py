@@ -87,7 +87,12 @@ class MenuItem(models.Model):
     is_available = models.BooleanField(default=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-    image = models.ImageField("Image", upload_to=None, height_field=None, width_field=None, max_length=None)
+    image = models.ImageField(
+        "Image",
+        upload_to='menu_images',
+        blank=True,
+        null=True
+    )
 
 
     def __str__(self):
