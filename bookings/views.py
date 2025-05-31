@@ -187,3 +187,26 @@ def booking_success(request):
 
 def home(request):
     return render(request, 'bookings/home.html')
+
+
+def about_view(request):
+    return render(request, 'bookings/about.html')
+
+
+def contact_view(request):
+    return render(request, 'bookings/contact.html')
+
+
+def menu_view(request):
+    return render(request, 'bookings/menu.html')
+
+
+def cancel_booking_view(request, booking_id):
+    return render(
+        request,
+        'bookings/cancel_booking.html')
+
+
+def view_bookings(request):
+    bookings = Booking.objects.select_related('customer', 'table').all()
+    return render(request, 'bookings/view_bookings.html', {'bookings': bookings})

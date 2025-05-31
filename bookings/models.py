@@ -3,6 +3,7 @@ from django.utils import timezone
 from django.conf import settings
 from django.db import models
 from datetime import datetime
+import uuid
 
 # Create your models here.
 
@@ -70,6 +71,7 @@ class Cancellation(models.Model):
     booking = models.OneToOneField(Booking, on_delete=models.CASCADE)
     cancellation_date = models.DateTimeField(auto_now_add=True)  # Automatically set the cancellation date when a cancellation is created
     reason = models.TextField(blank=True, null=True)  # Optional field for the reason of cancellation
+    token = models.UUIDField(default=uuid.uuid4, editable=False)
 
     def __str__(self):
         return (
@@ -84,7 +86,9 @@ class MenuItem(models.Model):
     price = models.DecimalField(max_digits=7, decimal_places=2)
     is_available = models.BooleanField(default=True)
     created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)   
+    updated_at = models.DateTimeField(auto_now=True)
+    image = models.ImageField("Image", upload_to=None, height_field=None, width_field=None, max_length=None)
+
 
     def __str__(self):
         return (
