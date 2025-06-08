@@ -94,12 +94,13 @@ class MenuItem(models.Model):
         null=True
     )
 
+    class Meta:
+        ordering = ['name']  # Orders menu items by name in ascending order
+        verbose_name = "Menu Item"
+        verbose_name_plural = "Menu Items"
 
     def __str__(self):
-        return (
-            f"{self.name} - {self.price} - "
-            f"{'Available' if self.is_available else 'Not Available'}"
-        )
+        return self.name
 
 
 class Feedback(models.Model):
