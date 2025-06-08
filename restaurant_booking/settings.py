@@ -14,7 +14,6 @@ from pathlib import Path
 from decouple import config
 # Importing dj_database_url to handle database URLs
 # and os for environment variable handling
-import dj_database_url
 import os
 from dotenv import load_dotenv
 load_dotenv()  # Load environment variables from a .env file
