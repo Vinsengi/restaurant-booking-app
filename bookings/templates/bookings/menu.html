@@ -1,9 +1,61 @@
 {% extends "bookings/base.html" %}
-{% block title %}Menu{% endblock %}
+{% block title %}Our Menu{% endblock %}
 
 {% block content %}
 <div class="container mt-4">
-  <h2>Our Menu</h2>
-  <p>This is a placeholder for your restaurant menu.</p>
+  <h2 class="mb-3">Our Menu</h2>
+
+  {% if page_obj %}
+    <div class="row">
+      {% for item in page_obj %}
+        <div class="col-md-4 mb-4">
+          <div class="card h-100">
+            {% if item.image %}
+              <img src="{{ item.image.url }}" class="card-img-top" alt="{{ item.name }}">
+            {% endif %}
+            <div class="card-body">
+              <h5 class="card-title">{{ item.name }}</h5>
+              <p class="card-text">{{ item.description|truncatechars:100 }}</p>
+              <p class="card-text"><strong>${{ item.price }}</strong></p>
+            </div>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+
+    <div class="d-flex justify-content-center mt-4">
+      <nav>
+        <ul class="pagination">
+          {% if page_obj.has_previous %}
+            <li class="page-item">
+              <a class="page-link" href="?page=1">&laquo; First</a>
+            </li>
+            <li class="page-item">
+              <a class="page-link" href="?page={{ page_obj.previous_page_number }}">Previous</a>
+            </li>
+          {% else %}
+            <li class="page-item disabled"><span class="page-link">&laquo;</span></li>
+            <li class="page-item disabled"><span class="page-link">Previous</span></li>
+          {% endif %}
+
+          <li class="page-item active"><span class="page-link">{{ page_obj.number }}</span></li>
+
+          {% if page_obj.has_next %}
+            <li class="page-item">
+              <a class="page-link" href="?page={{ page_obj.next_page_number }}">Next</a>
+            </li>
+            <li class="page-item">
+              <a class="page-link" href="?page={{ page_obj.paginator.num_pages }}">Last &raquo;</a>
+            </li>
+          {% else %}
+            <li class="page-item disabled"><span class="page-link">Next</span></li>
+            <li class="page-item disabled"><span class="page-link">&raquo;</span></li>
+          {% endif %}
+        </ul>
+      </nav>
+    </div>
+  {% else %}
+    <p>No menu items found.</p>
+  {% endif %}
 </div>
 {% endblock %}

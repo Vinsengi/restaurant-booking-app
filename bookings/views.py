@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from .models import Customer, Booking, Table, Cancellation
+from .models import Customer, Booking, Table, Cancellation, MenuItem
 from .forms import PublicBookingForm
 from django.contrib import messages
 from django.db import IntegrityError, transaction
@@ -9,6 +9,7 @@ from django.urls import reverse
 from .email_utils import send_booking_email
 from urllib.parse import urlencode
 from django.http import HttpResponse
+from django.core.paginator import Paginator
 
 import logging
 # Initialize logger
@@ -202,7 +203,13 @@ def contact_view(request):
 
 
 def menu_view(request):
-    return render(request, 'bookings/menu.html')
+    menu_items = MenuItem.objects.filter(is_available=True).order_by('name')
+    paginator = Paginator(menu_items, 6)  # Show 6 items per page
+
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+
+    return render(request, 'bookings/menu.html', {'page_obj': page_obj})
 
 
 def cancel_booking_view(request):
