@@ -17,6 +17,14 @@ logger = logging.getLogger(__name__)
 
 
 def public_booking_view(request):
+    menu_item_id = request.GET.get('menu_item')
+    menu_item = None
+    if menu_item_id:
+        try:
+            menu_item = MenuItem.objects.get(id=menu_item_id)
+        except MenuItem.DoesNotExist:
+            menu_item = None
+
     if request.method == 'POST':
         form = PublicBookingForm(request.POST)
         if form.is_valid():
@@ -93,7 +101,8 @@ def public_booking_view(request):
                                 'conflicting_table_ids': list(
                                     conflicting_table_ids
                                 ),
-                                'no_availability': True
+                                'no_availability': True,
+                                'menu_item': menu_item,
                             }
                         )
 
@@ -159,7 +168,8 @@ def public_booking_view(request):
             'form': form,
             'available_tables': None,
             'conflicting_table_ids': [],
-            'no_availability': False
+            'no_availability': False,
+            'menu_item': menu_item,
         })
 
 

@@ -16,7 +16,9 @@
             <div class="card-body">
               <h5 class="card-title">{{ item.name }}</h5>
               <p class="card-text">{{ item.description|truncatechars:100 }}</p>
-              <p class="card-text"><strong>${{ item.price }}</strong></p>
+              <p class="card-text"><strong>€{{ item.price }}</strong></p>
+              <a href="{% url 'public_booking' %}?menu_item={{ item.id }}" class="btn btn-sm btn-primary mt-2">Book Now</a>
+
             </div>
           </div>
         </div>
