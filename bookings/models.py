@@ -60,9 +60,9 @@ class Booking(models.Model):
                 self.booking_date = datetime.strptime(self.booking_date, "%Y-%m-%d").date()
             except ValueError:
                 self.booking_date = timezone.now().date()  # fallback to today
-            
+         
         # Automatically set the status based on the booking date
-        if self.booking_date < timezone.now().date():
+        if self.booking_date.date() < timezone.now().date():
             self.status = 'cancelled'  # Automatically cancel bookings in the past 
         super().save(*args, **kwargs)
 
