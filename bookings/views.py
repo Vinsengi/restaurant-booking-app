@@ -204,7 +204,7 @@ def contact_view(request):
 
 def menu_view(request):
     menu_items = MenuItem.objects.filter(is_available=True).order_by('name')
-    paginator = Paginator(menu_items, 6)  # Show 6 items per page
+    paginator = Paginator(menu_items, 3)  # Show 6 items per page
 
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
