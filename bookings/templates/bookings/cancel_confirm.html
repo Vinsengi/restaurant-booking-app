@@ -2,16 +2,27 @@
 {% block title %}Cancel Booking{% endblock %}
 
 {% block content %}
+<div class="card shadow-lg rounded-lg p-6 max-w-xl mx-auto mt-10 border border-red-200 bg-white">
+    <h2 class="text-2xl font-bold text-red-600 mb-4 text-center">Cancel Booking</h2>
 
-<h2>Cancel Booking Confirmation</h2>
-  <p>Are you sure you want to cancel your booking on 
-     <strong>{{ booking.booking_date }}</strong> at 
-     <strong>{{ booking.booking_time }}</strong> for 
-     <strong>{{ booking.number_of_guests }}</strong> guests?</p>
+    <p class="text-gray-700 mb-6 text-center">
+        Are you sure you want to cancel your booking on
+        <span class="font-semibold">{{ booking.booking_date }}</span> at
+        <span class="font-semibold">{{ booking.booking_time }}</span> for
+        <span class="font-semibold">{{ booking.number_of_guests }}</span> guests?
+    </p>
 
-  <form method="post">
-    {% csrf_token %}
-    <button type="submit">Yes, Cancel My Booking</button>
-    <a href="{% url 'home' %}">No, Go Back</a>
-  </form>
+    <form method="post" class="flex flex-col items-center space-y-4">
+        {% csrf_token %}
+        <button type="submit"
+            class="bg-red-600 text-white px-6 py-2 rounded hover:bg-red-700 transition duration-300">
+            Yes, Cancel My Booking
+        </button>
+        <a href="{% url 'home' %}" 
+           class="text-sm text-gray-500 hover:text-gray-700 underline">
+            No, take me back
+        </a>
+    </form>
+</div>
 {% endblock %}
+
