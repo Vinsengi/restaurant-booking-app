@@ -1,0 +1,17 @@
+{% extends "bookings/base.html" %}
+{% block title %}Cancel Booking{% endblock %}
+
+{% block content %}
+
+<h2>Cancel Booking Confirmation</h2>
+  <p>Are you sure you want to cancel your booking on 
+     <strong>{{ booking.booking_date }}</strong> at 
+     <strong>{{ booking.booking_time }}</strong> for 
+     <strong>{{ booking.number_of_guests }}</strong> guests?</p>
+
+  <form method="post">
+    {% csrf_token %}
+    <button type="submit">Yes, Cancel My Booking</button>
+    <a href="{% url 'home' %}">No, Go Back</a>
+  </form>
+{% endblock %}

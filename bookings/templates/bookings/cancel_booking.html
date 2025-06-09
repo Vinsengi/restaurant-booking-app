@@ -2,7 +2,7 @@
 {% block title %}Cancel Booking{% endblock %}
 
 {% block content %}
-{% comment %} <div class="container mt-4">
+<div class="container mt-4">
     <h2>Booking Cancellation</h2>
     {% if messages %}
         {% for message in messages %}
@@ -13,16 +13,5 @@
     <a href="{% url 'home' %}">Return to Home</a>
     <p>If this was a mistake, you can make a new booking anytime.</p>
     <a href="{% url 'public_booking' %}" class="btn btn-primary mt-3">Book Again</a>
-</div> {% endcomment %}
-<h2>Cancel Booking Confirmation</h2>
-  <p>Are you sure you want to cancel your booking on 
-     <strong>{{ booking.booking_date }}</strong> at 
-     <strong>{{ booking.booking_time }}</strong> for 
-     <strong>{{ booking.number_of_guests }}</strong> guests?</p>
-
-  <form method="post">
-    {% csrf_token %}
-    <button type="submit">Yes, Cancel My Booking</button>
-    <a href="{% url 'home' %}">No, Go Back</a>
-  </form>
+</div> 
 {% endblock %}

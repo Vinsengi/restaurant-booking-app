@@ -264,7 +264,7 @@ def cancel_booking_view(request):
 
         return redirect('cancel_success')
 
-    return render(request, 'bookings/cancel_booking.html', {'booking': booking})
+    return render(request, 'bookings/cancel_confirm.html', {'booking': booking})
 
 
 def cancel_success_view(request):
