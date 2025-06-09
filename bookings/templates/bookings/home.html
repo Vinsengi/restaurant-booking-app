@@ -1,11 +1,47 @@
 {% extends "bookings/base.html" %}
-
-{% block title %}Home{% endblock %}
+{% block title %}Welcome to Chez Mama{% endblock %}
 
 {% block content %}
-<div class="text-center mt-5">
-    <h1>Welcome to Chez Mama</h1>
-    <p class="lead">Book your table, explore the menu, and enjoy!</p>
-    <a href="{% url 'public_booking' %}" class="btn btn-primary mt-3">Make a Booking</a>
+<div class="container py-5">
+  <div class="text-center mb-5">
+    <h1 class="display-4 fw-bold">Welcome to Chez Mama</h1>
+    <p class="lead">Where Rwandan tradition meets modern dining elegance</p>
+  </div>
+
+  <div class="row align-items-center mb-5">
+    <div class="col-md-6">
+      <img src="{% static 'bookings/images/restaurant_interior.jpg' %}" alt="Chez Mama Interior" class="img-fluid rounded shadow">
+    </div>
+    <div class="col-md-6">
+      <h2 class="fw-semibold">A Taste of Home</h2>
+      <p>
+        At Chez Mama, we celebrate the warmth of Rwandan hospitality and the richness of traditional cuisine.
+        Every dish is crafted with love, using locally sourced ingredients and age-old family recipes.
+      </p>
+      <p>
+        Whether you're joining us for a family meal, a celebration, or a quiet evening, our space is your home away from home.
+      </p>
+    </div>
+  </div>
+
+  <div class="text-center mb-5">
+    <a href="{% url 'menu' %}" class="btn btn-outline-primary btn-lg">Explore Our Menu</a>
+    <a href="{% url 'public_booking' %}" class="btn btn-primary btn-lg ms-3">Book a Table</a>
+  </div>
+
+  <div class="row text-center">
+    <div class="col-md-4">
+      <h3>🍽 Authentic Flavors</h3>
+      <p>Traditional Rwandan dishes with a modern twist.</p>
+    </div>
+    <div class="col-md-4">
+      <h3>🏡 Cozy Ambience</h3>
+      <p>Designed to feel like home — because it is.</p>
+    </div>
+    <div class="col-md-4">
+      <h3>📍 Prime Location</h3>
+      <p>Easy to reach, hard to forget. Right in the heart of town.</p>
+    </div>
+  </div>
 </div>
 {% endblock %}
