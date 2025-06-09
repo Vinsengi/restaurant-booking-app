@@ -252,7 +252,6 @@ def cancel_booking_view(request):
     return render(request, 'bookings/cancel_booking.html', {'booking': booking})
 
 
-
 def view_bookings(request):
     bookings = Booking.objects.select_related('customer', 'table').all()
     return render(request, 'bookings/view_bookings.html', {'bookings': bookings})
