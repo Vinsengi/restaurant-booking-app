@@ -35,7 +35,10 @@ SECRET_KEY = config('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = config('ALLOWED_HOSTS')
+ALLOWED_HOSTS = [
+    'localhost',
+    'restaurant-booking-vital-83aa0e106c92.herokuapp.com',
+]
 
 
 # Application definition
