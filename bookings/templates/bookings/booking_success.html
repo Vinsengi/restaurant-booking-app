@@ -10,7 +10,7 @@
         <h2 class="mb-3">🎉 Booking Confirmed!</h2>
 
         {% if booking %}
-            <p>🍽️Your booking was successful! A confirmation email has been sent to your email.</p>
+            <p>🍽️Your booking was successful!</p>
             <p><strong>Summary of your reservation:</strong></p>
             <p><strong>Table number:</strong> {{ booking.table.table_number }}</p>
             <p><strong>Date:</strong> {{ booking.booking_date|date:"F j, Y" }} at {{ booking.booking_time|time:"H:i" }}</p>
