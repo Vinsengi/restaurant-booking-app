@@ -12,12 +12,12 @@ def send_booking_email(booking, customer):
     from_email = settings.DEFAULT_FROM_EMAIL
     to_email = customer.email
     # Safely check if a Cancellation object exists and has a token
-    cancel_token = None
-    cancel_url = None
+    cancel_token = booking.cancellation_token
+    cancel_url = (
+        f"{settings.SITE_URL}{reverse('cancel_booking')}?token={cancel_token}"
+        if cancel_token else None
+    )
 
-    if hasattr(booking, 'cancellation') and booking.cancellation.token:
-        cancel_token = booking.cancellation.token
-        cancel_url = f"{settings.SITE_URL}{reverse('cancel_booking')}?token={cancel_token}"
 
     # cancel_token = booking.cancellation.token
     # cancel_url = (

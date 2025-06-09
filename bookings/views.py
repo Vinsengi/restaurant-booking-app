@@ -10,6 +10,8 @@ from .email_utils import send_booking_email
 from urllib.parse import urlencode
 from django.http import HttpResponse
 from django.core.paginator import Paginator
+from django.shortcuts import get_object_or_404
+
 
 import logging
 # Initialize logger
@@ -222,20 +224,33 @@ def menu_view(request):
     return render(request, 'bookings/menu.html', {'page_obj': page_obj})
 
 
+# def cancel_booking_view(request):
+#     token = request.GET.get('token')
+#     if not token:
+#         return HttpResponseNotFound("Invalid or missing cancellation token.")
+
+#     try:
+#         cancellation = Cancellation.objects.select_related('booking').get(token=token)
+#         booking = cancellation.booking
+#         booking.delete()  # or mark as canceled instead
+#         messages.success(request, "Your booking has been successfully canceled.")
+#     except Cancellation.DoesNotExist:
+#         messages.error(request, "Invalid cancellation token.")
+
+#     return render(request, 'bookings/cancel_booking.html')
+
+
 def cancel_booking_view(request):
     token = request.GET.get('token')
-    if not token:
-        return HttpResponseNotFound("Invalid or missing cancellation token.")
+    booking = get_object_or_404(Booking, cancellation_token=token)
 
-    try:
-        cancellation = Cancellation.objects.select_related('booking').get(token=token)
-        booking = cancellation.booking
-        booking.delete()  # or mark as canceled instead
-        messages.success(request, "Your booking has been successfully canceled.")
-    except Cancellation.DoesNotExist:
-        messages.error(request, "Invalid cancellation token.")
+    if request.method == 'POST':
+        Cancellation.objects.create(booking=booking, reason="Cancelled by user")
+        messages.success(request, "Your booking has been cancelled.")
+        return redirect('home')
 
-    return render(request, 'bookings/cancel_booking.html')
+    return render(request, 'bookings/cancel_booking.html', {'booking': booking})
+
 
 
 def view_bookings(request):
