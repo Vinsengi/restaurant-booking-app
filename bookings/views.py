@@ -245,7 +245,9 @@ def cancel_booking_view(request):
     if request.method == 'POST':
         Cancellation.objects.create(booking=booking, reason="Cancelled by user")
         messages.success(request, "Your booking has been cancelled.")
-        return render(request, 'bookings/cancel_booking.html', {'booking': booking})
+        return redirect('home')
+
+    return render(request, 'bookings/cancel_booking.html', {'booking': booking})
 
 
 def view_bookings(request):
