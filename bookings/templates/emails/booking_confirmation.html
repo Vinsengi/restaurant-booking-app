@@ -53,8 +53,7 @@
                 </p>
                 <ul style="font-size: 16px; color: #333333; line-height: 1.6">
                   <li>
-                    <strong>Date:</strong> {{ booking.booking_date|date:"l, F j,
-                    Y" }}
+                    <strong>Date:</strong> {{ booking.booking_date|date:"l, F j, Y" }}
                   </li>
                   <li>
                     <strong>Time:</strong> {{ booking.booking_time|time:"H:i" }}
@@ -63,13 +62,11 @@
                     <strong>Guests:</strong> {{ booking.number_of_guests }}
                   </li>
                   <li>
-                    <strong>Table:</strong> Table {{ booking.table.table_number
-                    }}
+                    <strong>Table:</strong> Table {{ booking.table.table_number}}
                   </li>
                   {% if booking.special_requests %}
                   <li>
-                    <strong>Special Requests:</strong> {{
-                    booking.special_requests }}
+                    <strong>Special Requests:</strong> {{booking.special_requests }}
                   </li>
                   {% endif %}
                 </ul>
@@ -89,10 +86,12 @@
                     border-top: 1px solid #ddd;
                   "
                 />
+                {% if cancel_url %}
                 <p>
                   If you need to cancel your reservation, click the link below:
                 </p>
                 <p><a href="{{ cancel_url }}">Cancel My Booking</a></p>
+                {% endif %}
 
                 <hr
                   style="

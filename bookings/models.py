@@ -40,7 +40,9 @@ class Booking(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
     updated_at = models.DateTimeField(auto_now=True)   # Automatically update the time when a booking is modified 
     status = models.CharField(max_length=20, choices=[('confirmed', 'Confirmed'), ('cancelled', 'Cancelled')], default='confirmed')     # Status can be 'confirmed' or 'cancelled'
-    special_requests = models.TextField(blank=True, null=True)  # Optional field for any special requests by the customer   
+    special_requests = models.TextField(blank=True, null=True)  # Optional field for any special requests by the customer
+    cancellation_token = models.UUIDField(default=uuid.uuid4, unique=True, null=True, blank=True)
+
 
     def __str__(self):
         return (
@@ -62,8 +64,8 @@ class Booking(models.Model):
                 self.booking_date = timezone.now().date()  # fallback to today
          
         # Automatically set the status based on the booking date
-        if self.booking_date < timezone.now().date():
-            self.status = 'cancelled'  # Automatically cancel bookings in the past 
+        # if self.booking_date < timezone.now().date():
+        #     self.status = 'cancelled'  # Automatically cancel bookings in the past 
         super().save(*args, **kwargs)
 
 

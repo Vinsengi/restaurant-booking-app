@@ -117,8 +117,8 @@ def public_booking_view(request):
                         booking_time=booking_time,
                         special_requests=special_requests
                     )
-                    Cancellation.objects.create(
-                        booking=new_booking)
+                    # Cancellation.objects.create(
+                    #     booking=new_booking)
                     logger.info(
                         f"Booking created successfully: {new_booking.id} "
                         f"for {customer.name} at {booking_date} "
