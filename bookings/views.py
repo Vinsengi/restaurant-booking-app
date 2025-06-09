@@ -238,14 +238,31 @@ def menu_view(request):
 #     return render(request, 'bookings/cancel_booking.html')
 
 
+# def cancel_booking_view(request):
+#     token = request.GET.get('token')
+#     booking = get_object_or_404(Booking, cancellation_token=token)
+
+#     if request.method == 'POST':
+#         Cancellation.objects.create(booking=booking, reason="Cancelled by user")
+#         messages.success(request, "Your booking has been cancelled.")
+#         return render(request, 'bookings/cancel_success.html')
+
+#     return render(request, 'bookings/cancel_booking.html', {'booking': booking})
+
+
 def cancel_booking_view(request):
     token = request.GET.get('token')
     booking = get_object_or_404(Booking, cancellation_token=token)
 
     if request.method == 'POST':
-        Cancellation.objects.create(booking=booking, reason="Cancelled by user")
-        messages.success(request, "Your booking has been cancelled.")
-        return render(request, 'bookings/cancel_success.html')
+        # Prevent double cancellation
+        if not hasattr(booking, 'cancellation'):
+            Cancellation.objects.create(booking=booking, reason="Cancelled by user")
+            messages.success(request, "Your booking has been successfully canceled.")
+        else:
+            messages.info(request, "This booking has already been canceled.")
+
+        return redirect('cancel_success')
 
     return render(request, 'bookings/cancel_booking.html', {'booking': booking})
 
