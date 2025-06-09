@@ -37,7 +37,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = [
     'localhost',
-    '127.0.0.1:8000', '127.0.0.1',
+    '127.0.0.1',
     'restaurant-booking-vital-83aa0e106c92.herokuapp.com',
 ]
 
@@ -159,7 +159,7 @@ CLOUDINARY_STORAGE = {
 
 DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 
-MEDIA_URL = '/media/'
+# MEDIA_URL = '/media/'
 # MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 # Default primary key field type
