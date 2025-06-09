@@ -37,6 +37,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = [
     'localhost',
+    '127.0.0.1:8000', '127.0.0.1',
     'restaurant-booking-vital-83aa0e106c92.herokuapp.com',
 ]
 
