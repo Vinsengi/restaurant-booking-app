@@ -11,7 +11,7 @@
       <p class="card-text">
         Are you sure you want to cancel your booking/reservation for
         <strong>{{ booking.booking_date }}</strong> at
-        <strong>{{ booking.booking_time }}</strong> for
+        <strong>{{ booking.booking_time|time:"H:i" }}</strong> for
         <strong>{{ booking.number_of_guests }}</strong> guests?
       </p>
       <form method="post" class="d-grid gap-2">
