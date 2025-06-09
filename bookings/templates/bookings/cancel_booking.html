@@ -9,7 +9,7 @@
             <div class="alert alert-{{ message.tags }}">{{ message }}</div>
         {% endfor %}
     {% endif %}
-    <p>Thank you. Your booking for {{ booking.booking_date }} at {{ booking.booking_time }} has been cancelled.</p>
+    <p>Thank you. Your booking / reservation for {{ booking.booking_date }} at {{ booking.booking_time }} has been cancelled.</p>
     <a href="{% url 'home' %}">Return to Home</a>
     <p>If this was a mistake, you can make a new booking anytime.</p>
     <a href="{% url 'public_booking' %}" class="btn btn-primary mt-3">Book Again</a>
