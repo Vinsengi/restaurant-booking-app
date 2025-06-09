@@ -1,11 +1,18 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Booking Cancelled</title>
-</head>
-<body>
-    <h2>Your booking has been cancelled.</h2>
-    <p>We're sorry to see you go. Feel free to book again anytime!</p>
-    <a href="{% url 'home' %}">Return to Homepage</a>
-</body>
-</html>
+{% extends "bookings/base.html" %}
+{% block title %}Booking Cancelled{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+  <div class="card shadow-lg mx-auto" style="max-width: 500px;">
+    <div class="card-header bg-success text-white text-center">
+      <h4 class="mb-0">Booking Cancelled</h4>
+    </div>
+    <div class="card-body text-center">
+      <p class="lead mb-3">We're sorry to see you go.</p>
+      <p class="mb-4">Your booking has been successfully cancelled.</p>
+      <a href="{% url 'home' %}" class="btn btn-primary">Return to Homepage</a>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
