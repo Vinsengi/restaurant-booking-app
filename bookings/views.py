@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from .models import Customer, Booking, Table, Cancellation, MenuItem
 from .forms import PublicBookingForm
 from django.contrib import messages
@@ -10,8 +10,6 @@ from .email_utils import send_booking_email
 from urllib.parse import urlencode
 from django.http import HttpResponse
 from django.core.paginator import Paginator
-from django.shortcuts import get_object_or_404
-
 
 import logging
 # Initialize logger
@@ -247,9 +245,7 @@ def cancel_booking_view(request):
     if request.method == 'POST':
         Cancellation.objects.create(booking=booking, reason="Cancelled by user")
         messages.success(request, "Your booking has been cancelled.")
-        return redirect('home')
-
-    return render(request, 'bookings/cancel_booking.html', {'booking': booking})
+        return render(request, 'bookings/cancel_booking.html', {'booking': booking})
 
 
 def view_bookings(request):
