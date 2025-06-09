@@ -10,7 +10,7 @@
     <div class="card-body text-center">
       <p class="card-text">
         Are you sure you want to cancel your booking/reservation for
-        <strong>{{ booking.booking_date }}</strong> at
+        <strong>{{ booking.booking_date|date:"F j, Y" }}</strong> at
         <strong>{{ booking.booking_time|time:"H:i" }}</strong> for
         <strong>{{ booking.number_of_guests }}</strong> guests?
       </p>
