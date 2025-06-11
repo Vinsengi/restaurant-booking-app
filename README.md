@@ -1,5 +1,5 @@
 # 🍽️ Chez Mama Restaurant Booking App
-![Am I responsive Images](bookings\static\bookings\images\Amiresponsive.png)
+![Am I responsive Images](./bookings/static/bookings/images/Amiresponsive.png)
 - [Live Appliction](https://restaurant-booking-vital-83aa0e106c92.herokuapp.com/)
 ---
 
