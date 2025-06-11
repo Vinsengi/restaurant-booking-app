@@ -1,5 +1,5 @@
 # 🍽️ Chez Mama Restaurant Booking App
-
+![Am I responsive Images](bookings\static\bookings\images\Amiresponsive.png)
 - [Live Appliction](https://restaurant-booking-vital-83aa0e106c92.herokuapp.com/)
 ---
 
@@ -536,7 +536,7 @@ python manage.py runserver
 
 ---
 
-## 🗂 Project Structure
+## 🗂 Project Structure in brief 
 
 ```bash
 restaurant_booking/
@@ -564,3 +564,11 @@ restaurant_booking/
 - Dish rating and reviews
 - Admin notifications
 - Multilingual support
+
+## 🤝 Credit and Aknowledgments
+
+- Inspired by traditional Rwandan cuisine and culture.
+
+- Thanks to the Django community and contributors.
+
+- Special thanks to the Equip-Magu initiative for educational empowerment for allowing us to use the website as a fall-back during the construction of chez mama restaurant's website.
