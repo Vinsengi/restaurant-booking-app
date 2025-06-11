@@ -6,7 +6,7 @@
 {% block content %}
   <!-- Hero Section -->
   <div class="bg-image text-center text-white d-flex align-items-center justify-content-center" 
-       style="background: url('{% static 'bookings/images/contact-bg.jpg' %}') center/cover; height: 40vh;">
+       style="background: url('{% static 'bookings/images/contact-bg.png' %}') center/cover; height: 40vh;">
     <h1 class="display-4 fw-bold">Chez Mama</h1>
   </div>
 
@@ -25,7 +25,7 @@
       </div>
       <div class="col-md-4 mb-4">
         <h5 class="fw-semibold">Email</h5>
-        <p class="mb-0">contact@chezmama.rw</p>
+        <p class="mb-0">nvip2020@gmail.com</p>
       </div>
     </div>
 
@@ -40,6 +40,9 @@
           </div>
           <div class="mb-3">
             <input type="email" name="email" class="form-control" placeholder="Your Email" required>
+          </div>
+          <div class="mb-3">
+            <input type="tel" name="phone_number" class="form-control" placeholder="Your Phone Number" pattern="[0-9+\- ]{7,15}" required>
           </div>
           <div class="mb-3">
             <textarea name="message" rows="5" class="form-control" placeholder="Your Message" required></textarea>
