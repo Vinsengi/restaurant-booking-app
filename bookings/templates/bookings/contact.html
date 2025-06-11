@@ -1,0 +1,52 @@
+{% extends "bookings/base.html" %}
+{% load static %}
+
+{% block title %}Contact Us{% endblock %}
+
+{% block content %}
+  <!-- Hero Section -->
+  <div class="bg-image text-center text-white d-flex align-items-center justify-content-center" 
+       style="background: url('{% static 'bookings/images/contact-bg.jpg' %}') center/cover; height: 40vh;">
+    <h1 class="display-4 fw-bold">Chez Mama</h1>
+  </div>
+
+  <div class="container my-5">
+    <p class="lead text-center">We’re open 24/7 at Kacyiru, Kigali, and we’d love to hear from you! Feel free to drop us a message below.</p>
+
+    <!-- Contact Info -->
+    <div class="row text-center mb-5">
+      <div class="col-md-4 mb-4">
+        <h5 class="fw-semibold">Address</h5>
+        <p class="mb-0">KG 7 Ave, Kacyiru<br>Kigali, Rwanda</p>
+      </div>
+      <div class="col-md-4 mb-4">
+        <h5 class="fw-semibold">Phone</h5>
+        <p class="mb-0">+250 788 123 456</p>
+      </div>
+      <div class="col-md-4 mb-4">
+        <h5 class="fw-semibold">Email</h5>
+        <p class="mb-0">contact@chezmama.rw</p>
+      </div>
+    </div>
+
+    <!-- Contact Form Card -->
+    <div class="card mx-auto" style="max-width: 600px;">
+      <div class="card-body">
+        <h2 class="h4 text-center mb-4">Send Us a Message</h2>
+        <form action="{% url 'contact_submit' %}" method="post">
+          {% csrf_token %}
+          <div class="mb-3">
+            <input type="text" name="name" class="form-control" placeholder="Your Name" required>
+          </div>
+          <div class="mb-3">
+            <input type="email" name="email" class="form-control" placeholder="Your Email" required>
+          </div>
+          <div class="mb-3">
+            <textarea name="message" rows="5" class="form-control" placeholder="Your Message" required></textarea>
+          </div>
+          <button type="submit" class="btn btn-primary w-100">Submit</button>
+        </form>
+      </div>
+    </div>
+  </div>
+{% endblock %}

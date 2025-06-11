@@ -10,7 +10,7 @@ from .email_utils import send_booking_email
 from urllib.parse import urlencode
 from django.http import HttpResponse
 from django.core.paginator import Paginator
-
+from django.views.decorators.http import require_POST
 import logging
 # Initialize logger
 logger = logging.getLogger(__name__)
@@ -274,3 +274,13 @@ def cancel_success_view(request):
 def view_bookings(request):
     bookings = Booking.objects.select_related('customer', 'table').all()
     return render(request, 'bookings/view_bookings.html', {'bookings': bookings})
+
+
+@require_POST
+def contact_submit(request):
+    name    = request.POST['name']
+    email   = request.POST['email']
+    message = request.POST['message']
+    # … do something with the data …
+    messages.success(request, "Thanks! We’ve received your message.")
+    return redirect('contact')

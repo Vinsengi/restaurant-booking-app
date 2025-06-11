@@ -12,6 +12,7 @@ urlpatterns = [
     path('contact/', views.contact_view, name='contact'),
     path('cancel/', views.cancel_booking_view, name='cancel_booking'),
     path('cancel-success/', views.cancel_success_view, name='cancel_success'),
+    path('contact/submit/', views.contact_submit, name='contact_submit'),
 
 
 
