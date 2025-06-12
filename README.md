@@ -409,6 +409,7 @@ Here are upcoming improvements and features planned for the next version of the 
 - 📅 ** Add and display date and time the restaurant is open. currently, the assumption is that it is 24/7 open and ready to serve customers.
 - 🗺️ ** Add map fucntionaly
 - 💳💶 ** online ordering and Add payment functionalities
+- 🥘 ** Logo of Chez Mama Restaurant
 
 Stay tuned and watch the GitHub repo for upcoming milestones and issues.
 
