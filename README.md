@@ -18,6 +18,7 @@ Built with love and powered by Django, it’s here to make your dining experienc
 ## 🎯 Purpose
 
 This app is designed to help small and medium-sized restaurants:
+- The site owner would like the ability to take online bookings for their customers
 - Accept and manage table reservations online.
 - Display an interactive and image-rich menu.
 - Automate table availability checks to avoid double-bookings.
@@ -25,6 +26,7 @@ This app is designed to help small and medium-sized restaurants:
 - Manage cancellations
 - stay in touch with customers through feedback and contact us form
 - showcase the reviews got
+- The user would like to book one or more guests for a meal in a restaurant and a particular time and date
 
 ---
 
