@@ -15,13 +15,18 @@
             <p><strong>Table number:</strong> {{ booking.table.table_number }}</p>
             <p><strong>Date:</strong> {{ booking.booking_date|date:"F j, Y" }} at {{ booking.booking_time|time:"H:i" }}</p>
             <p><strong> Number of Guests:</strong> {{ booking.number_of_guests }} </p>
-            <p><strong><em>Booking made on:</strong> {{ booking.created_at }}: Server Time 🏢😊 </em></p>
+            <p><strong><em>Booking made on:</strong> {{ booking.created_at|date:"F j, Y, H:i"  }}: Server Time 🏢😊 </em></p>
         {% else %}
             <p>We couldn’t find the booking details, but your reservation has been confirmed.</p>
         {% endif %}
     </div>
 
-    <a href="{% url 'public_booking' %}" class="btn btn-primary">Make Another Booking</a>
+    <div class="text-center mt-4">
+        <a href="{% url 'public_booking' %}" class="btn btn-primary">Make Another Booking</a>
+        <a href="{% url 'home' %}#testimonialCarousel" class="btn btn-outline-secondary ms-2">
+      See What Our Customers Say
+    </a>
+    </div>
 </div>
 {% endblock %}
 
