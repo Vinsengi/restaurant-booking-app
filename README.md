@@ -32,6 +32,7 @@ This app is designed to help small and medium-sized restaurants:
 
 - **Menu listing**: Menu items stored in a database (with image support and availability).
 - **Booking system**: Users can book a table based on the number of guests and optionally book a specific dish.
+- ** Multiple table occupancies
 - ** Cancel booking option
 - **Admin panel**: Full Django admin for managing bookings, menu items, and customer feedback.
 - **Image uploads**: Media support for dish images.
@@ -62,7 +63,7 @@ This app is designed to help small and medium-sized restaurants:
 
 - Django 5.2.1
 - PostgreSQL (for production) / SQLite (for development)
-- HTML/CSS (Bootstrap 5)
+- HTML/CSS/JavaScript (Bootstrap)
 - Python 3.12
 - cloudinary for images storage online
 - [python-decouple](https://github.com/HBNetwork/python-decouple)
