@@ -9,7 +9,8 @@ Welcome to our **Restaurant Booking Website**! A full-featured web application f
 
 - 📜 Browse our traditional Rwandan meals on our menu of delicious dishes with a pagination 
 - 🍽️ Book a table online and even choose your dish in advance  
-- 📧 Get email confirmation when your booking is successful  
+- 📧 Get email confirmation when your booking is successful
+- ❌ Be able to cancel your booking just by a click of a button
 
 Built with love and powered by Django, it’s here to make your dining experience smooth and simple.
 
@@ -21,6 +22,9 @@ This app is designed to help small and medium-sized restaurants:
 - Display an interactive and image-rich menu.
 - Automate table availability checks to avoid double-bookings.
 - Store and serve images reliably through Cloudinary.
+- Manage cancellations
+- stay in touch with customers through feedback and contact us form
+- showcase the reviews got
 
 ---
 
@@ -28,11 +32,13 @@ This app is designed to help small and medium-sized restaurants:
 
 - **Menu listing**: Menu items stored in a database (with image support and availability).
 - **Booking system**: Users can book a table based on the number of guests and optionally book a specific dish.
+- ** Cancel booking option
 - **Admin panel**: Full Django admin for managing bookings, menu items, and customer feedback.
 - **Image uploads**: Media support for dish images.
 - **Email notifications**: Configurable SMTP setup for email confirmation.
 - **Responsive UI**: Clean layout using Bootstrap classes.
 - **Pagination**: Menu items are paginated for a better user experience.
+🔄 **Real-time table availability preview**: Show live feedback to users about available time slots before submitting the booking form.
 - ** etc.
 
 ---
@@ -44,8 +50,12 @@ This app is designed to help small and medium-sized restaurants:
 - ✅ Public booking form with live table availability
 - ✅ Automatic table assignment based on number of guests
 - ✅ Menu with image upload and Cloudinary integration
+- ✅ Get Feedback from the customers / public
 - ✅ Prevents double bookings for the same table/date/time
 - ✅ Stores customer details with duplicate-check logic
+- 📱 **Responsive UI improvements**: Improve the mobile layout and form usability on small screens.
+- 💬 **Customer feedback form improvements**: Include rating stars and comment moderation in the feedback system.
+- Admin Email notifications for every feedback
 
 ---
 ## 🛠️ Technologies Used
@@ -54,6 +64,7 @@ This app is designed to help small and medium-sized restaurants:
 - PostgreSQL (for production) / SQLite (for development)
 - HTML/CSS (Bootstrap 5)
 - Python 3.12
+- cloudinary for images storage online
 - [python-decouple](https://github.com/HBNetwork/python-decouple)
 - [whitenoise](http://whitenoise.evans.io/en/stable/) for static file handling
 
@@ -96,6 +107,7 @@ EMAIL_USE_TLS=True
 EMAIL_HOST_USER=your_email@gmail.com
 EMAIL_HOST_PASSWORD=your_app_password
 DEFAULT_FROM_EMAIL=your_email@gmail.com
+NOTIFICATION_FROM_EMAIL
 
 # PostgreSQL (used by Heroku)
 DATABASE_URL=postgres://user:password@host:port/dbname
@@ -341,10 +353,10 @@ class MenuItem(models.Model):
 | Duplicate Prevention      | Try booking same table/date/time twice — should be blocked.          |
 | Cancel Booking            | Use `/cancel/` to enter details and verify it's removed.             |
 | Menu Image Display        | Upload a menu item with an image and verify it shows on `/menu/`.    |
-
+and more...
 ---
 
-## 🧪 Automated Testing
+## 🧪 Automated Testing - optional and did not do it yet by the submission time
 
 Run all tests with:
 
@@ -389,13 +401,10 @@ Contributions are welcome! Please fork the repository, create a new branch, and 
 
 Here are upcoming improvements and features planned for the next version of the app:
 
-- 🔄 **Real-time table availability preview**: Show live feedback to users about available time slots before submitting the booking form.
 - 📨 **Email notifications**: Send cancellation emails to customers automatically after thy cancel.
-- 📱 **Responsive UI improvements**: Improve the mobile layout and form usability on small screens.
 - 🌐 **Multilingual support**: Add basic internationalization (i18n) starting with English and French.
 - 🔐 **Admin role permissions**: Introduce finer-grained permissions to allow different admin roles.
 - 🗓️ **Calendar view for admin bookings**: Add a calendar-style UI to visualize daily bookings.
-- 💬 **Customer feedback form improvements**: Include rating stars and comment moderation in the feedback system.
 - ⚙️ **Optional table selection**: Let repeat customers optionally select a preferred table if available.
 - 📅 ** Add and display date and time the restaurant is open. currently, the assumption is that it is 24/7 open and ready to serve customers.
 - 🗺️ ** Add map fucntionaly
@@ -409,7 +418,6 @@ Stay tuned and watch the GitHub repo for upcoming milestones and issues.
 
 The following issues have been identified and are under review:
 
-- ❗ **Image not uploading to Cloudinary**: In some setups, images appear broken because of Cloudinary issues.
 - ⚠️ **Admin panel menu image preview**: Uploaded images sometimes don’t render in the admin panel preview after saving — requires manual refresh.
 - 🕐 **Booking time slot conflicts**: In rare race conditions, double bookings may occur if two users submit forms simultaneously.
 - 📧 **Missing cancellation email confirmation**: Cancellation emails are not yet implemented, so users do not receive acancellation email receipt.
@@ -562,13 +570,14 @@ restaurant_booking/
 
 - User authentication
 - Dish rating and reviews
-- Admin notifications
 - Multilingual support
 
 ## 🤝 Credit and Aknowledgments
 
 - Inspired by traditional Rwandan cuisine and culture.
 
-- Thanks to the Django community and contributors.
+- Thanks to the AI
 
-- Special thanks to the Equip-Magu initiative for educational empowerment for allowing us to use the website as a fall-back during the construction of chez mama restaurant's website.
+- Thanks to Code Institute student support Team and Student care Team for their support
+
+- Special thanks to the Equip-Magu initiative for educational empowerment for allowing us to use the website as a fall-back during the construction of chez mama restaurant's website and adding it as part of "visit our other work"
