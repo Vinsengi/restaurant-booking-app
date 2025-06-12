@@ -36,13 +36,16 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = config('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+# DEBUG = False
+DEBUG = config('DEBUG', default=False, cast=bool)
 
-ALLOWED_HOSTS = [
-    'localhost',
-    '127.0.0.1',
-    'restaurant-booking-vital-83aa0e106c92.herokuapp.com',
-]
+ALLOWED_HOSTS = config('ALLOWED_HOSTS', default='localhost,127.0.0.1', cast=lambda v: [s.strip() for s in v.split(',')])
+
+# ALLOWED_HOSTS = [
+#     'localhost',
+#     '127.0.0.1',
+#     'restaurant-booking-vital-83aa0e106c92.herokuapp.com',
+# ]
 
 
 # Application definition
@@ -92,9 +95,8 @@ TEMPLATES = [
 WSGI_APPLICATION = 'restaurant_booking.wsgi.application'
 
 
-
 DATABASES = {
-    'default': dj_database_url.config(default=os.getenv('DATABASE_URL'))
+    'default': dj_database_url.config(default=config('DATABASE_URL'))
 }
 
 
@@ -167,7 +169,8 @@ EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD')
 DEFAULT_FROM_EMAIL = config('DEFAULT_FROM_EMAIL')
 NOTIFY_CONTACT_EMAIL = config('NOTIFY_CONTACT_EMAIL', default=EMAIL_HOST_USER)
 
-SITE_URL = config('SITE_URL')
+
+SITE_URL = config('SITE_URL', default='http://localhost:8000')
 SITE_NAME = config('SITE_NAME')
 
 
