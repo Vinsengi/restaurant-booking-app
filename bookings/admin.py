@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Customer, Table, Booking, Cancellation, Feedback, MenuItem
+from .models import Customer, Table, Booking, Cancellation, Feedback, MenuItem, ContactMessage
 from datetime import datetime, timedelta
 
 # Register your models here.
@@ -71,3 +71,12 @@ class MenuItemAdmin(admin.ModelAdmin):
     list_display = ('name', 'price', 'is_available',)
     search_fields = ('name',)
     list_filter = ('is_available',)
+
+
+@admin.register(ContactMessage)
+class ContactMessageAdmin(admin.ModelAdmin):
+    list_display = ('name', 'email', 'submitted')
+    list_filter = ('submitted',)
+    search_fields = ('name', 'email', 'message')
+    date_hierarchy = 'submitted'
+    readonly_fields = ('submitted',)

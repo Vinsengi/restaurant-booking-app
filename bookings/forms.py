@@ -1,5 +1,5 @@
 from django import forms
-from .models import Booking, Customer, Table
+from .models import Booking, Customer, Table, Feedback
 from django.core.validators import RegexValidator
 
 
@@ -116,3 +116,12 @@ class PublicBookingForm(forms.Form):
             'rows': 3,
         })
     )
+
+
+class FeedbackForm(forms.ModelForm):
+    class Meta:
+        model  = Feedback
+        fields = ['rating', 'comments']
+        widgets = {
+            'comments': forms.Textarea(attrs={'rows':4, 'placeholder':'Your thoughts…'}),
+        }

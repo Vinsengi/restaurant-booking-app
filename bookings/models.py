@@ -1,7 +1,6 @@
 from django.db import models
 from django.utils import timezone
 from django.conf import settings
-from django.db import models
 from datetime import datetime
 import uuid
 
@@ -129,3 +128,25 @@ class Feedback(models.Model):
         if self.rating is None:
             self.rating = 5
         super().save(*args, **kwargs)
+
+
+class ContactMessage(models.Model):
+    customer  = models.ForeignKey(
+        Customer,
+        null=True, blank=True,
+        on_delete=models.SET_NULL,
+        related_name='contact_messages'
+    )
+    name      = models.CharField(max_length=100)
+    email     = models.EmailField()
+    phone_number = models.CharField(
+        max_length=15,
+        null=True,      # allow existing rows to have NULL
+        blank=True,     # allow form-level blank
+        unique=True    # don’t enforce uniqueness just yet
+    )
+    message   = models.TextField()
+    submitted = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.name} <{self.email}> @ {self.submitted:%Y-%m-%d %H:%M}"
