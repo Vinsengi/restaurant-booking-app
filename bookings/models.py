@@ -105,12 +105,12 @@ class MenuItem(models.Model):
 
 
 class Feedback(models.Model):
-    booking = models.OneToOneField(Booking, on_delete=models.CASCADE)
+    booking = models.OneToOneField(Booking, on_delete=models.CASCADE, null=True, blank=True)
     rating = models.PositiveIntegerField()  # Assuming a rating scale of 1 to 5
     comments = models.TextField(blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-    customer = models.ForeignKey(Customer, on_delete=models.CASCADE, related_name='feedbacks')
+    customer = models.ForeignKey(Customer, on_delete=models.CASCADE, related_name='feedbacks', null=True, blank=True)
 
     # Adding a foreign key to Customer to link feedback to the customer who made the booking
 

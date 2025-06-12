@@ -1,6 +1,15 @@
+from django.conf import settings
 from django.shortcuts import render, redirect, get_object_or_404
-from .models import Customer, Booking, Table, Cancellation, MenuItem
-from .forms import PublicBookingForm
+from .models import (
+    Customer,
+    Booking,
+    Table,
+    Cancellation,
+    MenuItem,
+    ContactMessage,
+    Feedback,
+)
+from .forms import PublicBookingForm, FeedbackForm
 from django.contrib import messages
 from django.db import IntegrityError, transaction
 from datetime import datetime, timedelta
@@ -10,7 +19,8 @@ from .email_utils import send_booking_email
 from urllib.parse import urlencode
 from django.http import HttpResponse
 from django.core.paginator import Paginator
-from django.views.decorators.http import require_POST
+from django.views.decorators.http import require_POST, require_http_methods
+from django.core.mail import send_mail
 import logging
 # Initialize logger
 logger = logging.getLogger(__name__)
@@ -200,8 +210,22 @@ def booking_success(request):
     )
 
 
+@require_http_methods(['GET','POST'])
 def home(request):
-    return render(request, 'bookings/home.html')
+    if request.method == 'POST':
+        form = FeedbackForm(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Thanks for your feedback!")
+            return redirect('home')
+    else:
+        form = FeedbackForm()
+
+    testimonials = Feedback.objects.order_by('-created_at')[:5]
+    return render(request, 'bookings/home.html', {
+        'form': form,
+        'testimonials': testimonials
+    })
 
 
 def about_view(request):
@@ -276,11 +300,70 @@ def view_bookings(request):
     return render(request, 'bookings/view_bookings.html', {'bookings': bookings})
 
 
+def booking_detail(request, pk):
+    booking = get_object_or_404(Booking, pk=pk, customer=request.user.customer)
+    return render(request, 'bookings/booking_detail.html', {'booking': booking})
+
+
 @require_POST
 def contact_submit(request):
-    name    = request.POST['name']
-    email   = request.POST['email']
-    message = request.POST['message']
-    # … do something with the data …
+    name  = request.POST['name'].strip()
+    email = request.POST['email'].strip().lower()
+    text  = request.POST['message'].strip()
+
+    # 1) Find-or-create the customer
+    customer, created = Customer.objects.get_or_create(
+        email=email,
+        defaults={'name': name}
+    )
+    if not created and not customer.name:
+        customer.name = name
+        customer.save()
+
+    # 2) Save the message
+    ContactMessage.objects.create(
+        customer=customer,
+        name=name,
+        email=email,
+        message=text
+    )
+
+    # 3) Send notification email
+    send_mail(
+        subject=f"[Contact] {name} wrote in",
+        message=f"From: {name} <{email}>\n\n{text}",
+        from_email=settings.DEFAULT_FROM_EMAIL,
+        recipient_list=[settings.NOTIFY_CONTACT_EMAIL],
+        fail_silently=False,
+    )
+
+    # 4) Flash success & redirect
     messages.success(request, "Thanks! We’ve received your message.")
     return redirect('contact')
+
+
+# @require_http_methods(['GET','POST'])
+# def leave_feedback(request, pk):
+#     # ensure the booking exists and belongs to this user
+#     booking = get_object_or_404(Booking, pk=pk, customer=request.user.customer)
+
+#     # prevent double‐posting
+#     if hasattr(booking, 'feedback'):
+#         messages.info(request, "You’ve already left feedback for this booking.")
+#         # redirect back to the success page, passing the booking_id
+#         return redirect(f"{reverse('booking_success')}?booking_id={booking.id}")
+
+#     form = FeedbackForm(request.POST or None)
+#     if form.is_valid():
+#         fb = form.save(commit=False)
+#         fb.booking  = booking
+#         fb.customer = booking.customer
+#         fb.save()
+#         messages.success(request, "Thanks! Your feedback is saved.")
+#         # once saved, go back to the success page to see the feedback card
+#         return redirect(f"{reverse('booking_success')}?booking_id={booking.id}")
+
+#     return render(request, 'bookings/feedback_form.html', {
+#         'form': form,
+#         'booking': booking
+#     })
