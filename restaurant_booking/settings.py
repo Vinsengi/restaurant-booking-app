@@ -36,17 +36,17 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = config('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
-# DEBUG = config('DEBUG', default=False, cast=bool)
+# DEBUG = True
+DEBUG = config('DEBUG', default=False, cast=bool)
 
-ALLOWED_HOSTS = config('ALLOWED_HOSTS', default='localhost,127.0.0.1', cast=lambda v: [s.strip() for s in v.split(',')])
-CSRF_TRUSTED_ORIGINS = ['https://restaurant-booking-vital-83aa0e106c92.herokuapp.com']
+# ALLOWED_HOSTS = config('ALLOWED_HOSTS', default='localhost,127.0.0.1', cast=lambda v: [s.strip() for s in v.split(',')])
+# CSRF_TRUSTED_ORIGINS = ['https://restaurant-booking-vital-83aa0e106c92.herokuapp.com']
 
-# ALLOWED_HOSTS = [
-#     'localhost',
-#     '127.0.0.1',
-#     'restaurant-booking-vital-83aa0e106c92.herokuapp.com',
-# ]
+ALLOWED_HOSTS = [
+    'localhost',
+    '127.0.0.1',
+    'restaurant-booking-vital-83aa0e106c92.herokuapp.com',
+]
 
 
 # Application definition
@@ -88,6 +88,8 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'django.template.context_processors.debug',
+
             ],
         },
     },
@@ -208,16 +210,8 @@ LOGGING = {
     },
 }
 
-# LOGGING = {
-#     'version': 1,
-#     'handlers': {
-#         'console': {'class': 'logging.StreamHandler'},
-#     },
-#     'root': {
-#         'handlers': ['console'],
-#         'level': 'INFO',
-#     },
-# }
+# Only apply HTTPS settings in production
+
 
 
 # Default primary key field type
