@@ -340,30 +340,3 @@ def contact_submit(request):
     # 4) Flash success & redirect
     messages.success(request, "Thanks! We’ve received your message.")
     return redirect('contact')
-
-
-# @require_http_methods(['GET','POST'])
-# def leave_feedback(request, pk):
-#     # ensure the booking exists and belongs to this user
-#     booking = get_object_or_404(Booking, pk=pk, customer=request.user.customer)
-
-#     # prevent double‐posting
-#     if hasattr(booking, 'feedback'):
-#         messages.info(request, "You’ve already left feedback for this booking.")
-#         # redirect back to the success page, passing the booking_id
-#         return redirect(f"{reverse('booking_success')}?booking_id={booking.id}")
-
-#     form = FeedbackForm(request.POST or None)
-#     if form.is_valid():
-#         fb = form.save(commit=False)
-#         fb.booking  = booking
-#         fb.customer = booking.customer
-#         fb.save()
-#         messages.success(request, "Thanks! Your feedback is saved.")
-#         # once saved, go back to the success page to see the feedback card
-#         return redirect(f"{reverse('booking_success')}?booking_id={booking.id}")
-
-#     return render(request, 'bookings/feedback_form.html', {
-#         'form': form,
-#         'booking': booking
-#     })
