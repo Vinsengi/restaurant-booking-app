@@ -61,7 +61,7 @@ INSTALLED_APPS = [
     'bookings',
     'cloudinary_storage',
     'cloudinary',
-    'sslserver',
+    
     ]
 
 
