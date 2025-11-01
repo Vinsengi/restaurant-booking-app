@@ -10,7 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.2/ref/settings/
 """
 from pathlib import Path
-from decouple import config
+from decouple import config, Csv
 import os
 import dj_database_url
 import cloudinary
@@ -23,33 +23,28 @@ from dotenv import load_dotenv
 # Importing dj_database_url to handle database URLs
 # and os for environment variable handling
 
-load_dotenv()  # Load environment variables from a .env file
+load_dotenv()  
 
-# Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+SECRET_KEY = config('SECRET_KEY', default='dev-secret-key-do-not-use-in-production')
 
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
 
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = config('SECRET_KEY')
-
-# SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
-# DEBUG = config('DEBUG', default=False, cast=bool)
 
-# ALLOWED_HOSTS = config('ALLOWED_HOSTS', default='localhost,127.0.0.1', cast=lambda v: [s.strip() for s in v.split(',')])
-# CSRF_TRUSTED_ORIGINS = ['https://restaurant-booking-vital-83aa0e106c92.herokuapp.com']
+_raw_allowed_hosts = config(
+    'ALLOWED_HOSTS',
+    default='127.0.0.1,localhost,restaurant-booking-vital-83aa0e106c92.herokuapp.com'
+)
+ALLOWED_HOSTS = [h.strip() for h in _raw_allowed_hosts.split(',') if h.strip()]
+ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
 
-ALLOWED_HOSTS = [
-    'localhost',
-    '127.0.0.1',
-    'restaurant-booking-vital-83aa0e106c92.herokuapp.com',
-]
+CSRF_TRUSTED_ORIGINS = config(
+    'CSRF_TRUSTED_ORIGINS',
+    default='http://127.0.0.1:8000,https://restaurant-booking-vital-83aa0e106c92.herokuapp.com',
+    cast=Csv(),
+)
 
-
-# Application definition
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -59,9 +54,10 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'bookings',
+    'accounts',
     'cloudinary_storage',
     'cloudinary',
-    
+
     ]
 
 
@@ -100,12 +96,14 @@ WSGI_APPLICATION = 'restaurant_booking.wsgi.application'
 
 
 DATABASES = {
-    'default': dj_database_url.config(default=config('DATABASE_URL'))
+    'default': dj_database_url.config(
+        default=config(
+            'DATABASE_URL',
+            default=f"sqlite:///{BASE_DIR / 'db.sqlite3'}"
+        )
+    )
 }
 
-
-# Password validation
-# https://docs.djangoproject.com/en/5.2/ref/settings/#auth-password-validators
 
 AUTH_PASSWORD_VALIDATORS = [
     {
@@ -131,30 +129,52 @@ USE_I18N = True
 
 USE_TZ = True
 
-
-
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [
-    BASE_DIR / "bookings" / "static",
+    os.path.join(BASE_DIR, 'static'),
+
 ]
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
-# Cloudinary configuration
-CLOUDINARY_STORAGE = {
-    'CLOUD_NAME': config('CLOUD_NAME'),
-    'API_KEY': config('CLOUD_API_KEY'),
-    'API_SECRET': config('CLOUD_API_SECRET'),
-}
+if DEBUG:
+    # Development: simple/static, no manifest required
+    STORAGES = {
+        "default": {
+            # In dev you can keep Cloudinary OR temporarily use FileSystemStorage
+            # If Cloudinary is causing errors locally, switch this to FileSystemStorage.
+            "BACKEND": "django.core.files.storage.FileSystemStorage",
+        },
+        "staticfiles": {
+            "BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage",
+        },
+    }
+else:
+    # Production: Cloudinary for media, WhiteNoise for static
+    STORAGES = {
+        "default": {
+            "BACKEND": "cloudinary_storage.storage.MediaCloudinaryStorage",
+        },
+        "staticfiles": {
+            "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
+        },
+    }
+    # Cloudinary configuration
+    CLOUDINARY_STORAGE = {
+        'CLOUD_NAME': config('CLOUD_NAME'),
+        'API_KEY': config('CLOUD_API_KEY'),
+        'API_SECRET': config('CLOUD_API_SECRET'),
+    }
+
 
 # Modern Django 5.x storage configuration
-STORAGES = {
-    "default": {
-        "BACKEND": "cloudinary_storage.storage.MediaCloudinaryStorage",
-    },
-    "staticfiles": {
-        "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
-    },
-}
+# STORAGES = {
+#     "default": {
+#         "BACKEND": "cloudinary_storage.storage.MediaCloudinaryStorage",
+#     },
+#     "staticfiles": {
+#         "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
+#     },
+# }
 
 
 MEDIA_URL = '/media/'
@@ -163,19 +183,21 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+if DEBUG:
+    EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+else:
 
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = config('EMAIL_HOST')
-EMAIL_PORT = config('EMAIL_PORT', cast=int)
-EMAIL_USE_TLS = config('EMAIL_USE_TLS', cast=bool)
-EMAIL_HOST_USER = config('EMAIL_HOST_USER')
-EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD')
-DEFAULT_FROM_EMAIL = config('DEFAULT_FROM_EMAIL')
-NOTIFY_CONTACT_EMAIL = config('NOTIFY_CONTACT_EMAIL', default=EMAIL_HOST_USER)
+    EMAIL_HOST = config('EMAIL_HOST', default='smtp.gmail.com')
+    EMAIL_PORT = config('EMAIL_PORT', default=587, cast=int)
+    EMAIL_USE_TLS = config('EMAIL_USE_TLS', default=True, cast=bool)
+    EMAIL_HOST_USER = config('EMAIL_HOST_USER', default='')
+    EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD', default='')
+    DEFAULT_FROM_EMAIL = config('DEFAULT_FROM_EMAIL', default='no-reply@chezmama.com')
+    NOTIFY_CONTACT_EMAIL = config('NOTIFY_CONTACT_EMAIL', default=EMAIL_HOST_USER)
 
 
 SITE_URL = config('SITE_URL', default='http://localhost:8000')
-SITE_NAME = config('SITE_NAME')
+SITE_NAME = config('SITE_NAME', default='Chez Mama')
 
 
 LOGGING = {
@@ -210,54 +232,3 @@ LOGGING = {
         },
     },
 }
-
-# Only apply HTTPS settings in production
-
-
-
-# Default primary key field type
-# https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
-
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/5.2/howto/static-files/
-
-# STATIC_URL = '/static/'
-# STATICFILES_DIRS = [
-#     BASE_DIR / "bookings" / "static",
-#     ]
-# STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')  # Directory where static files will be collected in production
-
-
-# # for heroku
-# STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'  # Use WhiteNoise to serve static files in production
-
-
-# # for claudinary
-
-# CLOUDINARY_STORAGE = {
-#     'CLOUD_NAME': config('CLOUD_NAME'),
-#     'API_KEY': config('CLOUD_API_KEY'),
-#     'API_SECRET': config('CLOUD_API_SECRET'),
-# }
-
-# DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
-
-
-# Email settings
-# EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
-
-
-# Internationalization
-# https://docs.djangoproject.com/en/5.2/topics/i18n/
-
-
-
-# Database
-# https://docs.djangoproject.com/en/5.2/ref/settings/#databases
-
-# DATABASES = {
-#    'default': {
-#        'ENGINE': 'django.db.backends.sqlite3',
-#        'NAME': BASE_DIR / 'db.sqlite3',
-#    }
-# }

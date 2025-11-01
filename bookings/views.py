@@ -9,7 +9,8 @@ from .models import (
     ContactMessage,
     Feedback,
 )
-from .forms import PublicBookingForm, FeedbackForm
+from django.contrib.auth.decorators import login_required
+from .forms import PublicBookingForm, FeedbackForm, BookingUpdateForm
 from django.contrib import messages
 from django.db import IntegrityError, transaction
 from datetime import datetime, timedelta
@@ -119,13 +120,15 @@ def public_booking_view(request):
                     selected_table = available_tables.first()
 
                     # 📝 Create the booking
+                    user_obj = request.user if request.user.is_authenticated else None
                     new_booking = Booking.objects.create(
                         customer=customer,
                         table=selected_table,
                         number_of_guests=number_of_guests,
                         booking_date=booking_date,
                         booking_time=booking_time,
-                        special_requests=special_requests
+                        special_requests=special_requests,
+                        user=user_obj
                     )
                     # Cancellation.objects.create(
                     #     booking=new_booking)
@@ -267,14 +270,14 @@ def cancel_success_view(request):
     return render(request, 'bookings/cancel_success.html')
 
 
-def view_bookings(request):
-    bookings = Booking.objects.select_related('customer', 'table').all()
-    return render(request, 'bookings/view_bookings.html', {'bookings': bookings})
+# def view_bookings(request):
+#     bookings = Booking.objects.select_related('customer', 'table').all()
+#     return render(request, 'bookings/view_bookings.html', {'bookings': bookings})
 
 
-def booking_detail(request, pk):
-    booking = get_object_or_404(Booking, pk=pk, customer=request.user.customer)
-    return render(request, 'bookings/booking_detail.html', {'booking': booking})
+# def booking_detail(request, pk):
+#     booking = get_object_or_404(Booking, pk=pk, customer=request.user.customer)
+#     return render(request, 'bookings/booking_detail.html', {'booking': booking})
 
 
 @require_POST
@@ -312,3 +315,71 @@ def contact_submit(request):
     # 4) Flash success & redirect
     messages.success(request, "Thanks! We’ve received your message.")
     return redirect('contact')
+
+
+@login_required
+def my_bookings(request):
+    """
+    Show only the bookings that belong to the logged-in Django user.
+    To satisfythe "R" in CRUD.
+    """
+    bookings = (
+        Booking.objects
+        .filter(user=request.user)
+        .select_related('table', 'customer')
+        .order_by('booking_date', 'booking_time')
+    )
+    return render(request, 'bookings/my_bookings.html', {
+        'bookings': bookings
+    })
+
+
+@login_required
+def edit_booking(request, booking_id):
+    """
+    Allow the owner of a booking to update date/time/guest count/etc.
+    """
+    booking = get_object_or_404(Booking, id=booking_id)
+
+    # Defensive design: block editing someone else's booking
+    if booking.user != request.user:
+        messages.error(request, "You are not allowed to edit this booking.")
+        return redirect('my_bookings')
+
+    if request.method == 'POST':
+        form = BookingUpdateForm(request.POST, instance=booking)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Your booking was updated successfully.")
+            return redirect('my_bookings')
+    else:
+        form = BookingUpdateForm(instance=booking)
+
+    return render(request, 'bookings/edit_booking.html', {
+        'form': form,
+        'booking': booking
+    })
+
+
+@login_required
+def delete_booking(request, booking_id):
+    """
+    Allow the owner of a booking to delete it.
+    This is the "D" in CRUD.
+    """
+    booking = get_object_or_404(Booking, id=booking_id)
+
+    # Defensive design: only owner can delete
+    if booking.user != request.user:
+        messages.error(request, "You are not allowed to delete this booking.")
+        return redirect('my_bookings')
+
+    if request.method == 'POST':
+        booking.delete()
+        messages.success(request, "Your booking was deleted.")
+        return redirect('my_bookings')
+
+    # For GET, show confirmation page
+    return render(request, 'bookings/confirm_delete.html', {
+        'booking': booking
+    })

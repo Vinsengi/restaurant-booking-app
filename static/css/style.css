@@ -1,0 +1,13 @@
+body {
+    background-color: #f8f9fa; /* light gray background like Bootstrap's bg-light */
+}
+
+.navbar-brand {
+    font-weight: 600;
+    letter-spacing: 0.03em;
+}
+.about-hero {
+    max-height: 400px;
+    object-fit: cover;
+    width: 100%;
+}

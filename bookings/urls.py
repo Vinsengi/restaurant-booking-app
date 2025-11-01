@@ -13,6 +13,18 @@ urlpatterns = [
     path('cancel/', views.cancel_booking_view, name='cancel_booking'),
     path('cancel-success/', views.cancel_success_view, name='cancel_success'),
     path('contact/submit/', views.contact_submit, name='contact_submit'),
+    path('my-bookings/', views.my_bookings, name='my_bookings'),
+    path(
+        'booking/<int:booking_id>/edit/',
+        views.edit_booking,
+        name='edit_booking',
+    ),
+    path(
+        'booking/<int:booking_id>/delete/',
+        views.delete_booking,
+        name='delete_booking',
+    ),
+
 
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT) + \

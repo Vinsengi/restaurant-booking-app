@@ -31,7 +31,7 @@ class BookingForm(forms.ModelForm):
         labels = {
             'customer': 'Customer Name',
             'number_of_guests': 'Number of Guests',
-            'table': 'Table Number',
+            # 'table': 'Table Number',
             'booking_date': 'Booking Date',
             'booking_time': 'Booking Time',
             'special_requests': 'Special Requests (if any)',
@@ -39,7 +39,7 @@ class BookingForm(forms.ModelForm):
         help_texts = {
             'customer': 'Select or create a customer for this booking.',
             'number_of_guests': 'Enter the number of guests for this booking.',
-            'table': 'Select the table for this booking.',
+            # 'table': 'Select the table for this booking.',
             'booking_date': 'Select the date for the booking.',
             'booking_time': 'Select the time for the booking.',
             'special_requests': 'Any special requests or notes for the booking.',
@@ -120,8 +120,58 @@ class PublicBookingForm(forms.Form):
 
 class FeedbackForm(forms.ModelForm):
     class Meta:
-        model  = Feedback
+        model = Feedback
         fields = ['rating', 'comments']
         widgets = {
             'comments': forms.Textarea(attrs={'rows':4, 'placeholder':'Your thoughts…'}),
+        }
+
+
+class BookingUpdateForm(forms.ModelForm):
+    class Meta:
+        model = Booking
+        fields = [
+            'booking_date',
+            'booking_time',
+            'number_of_guests',
+            'special_requests',
+        ]
+        widgets = {
+            'booking_date': forms.DateInput(
+                attrs={
+                    'type': 'date',
+                    'class': 'form-control'
+                }
+            ),
+            'booking_time': forms.TimeInput(
+                attrs={
+                    'type': 'time',
+                    'class': 'form-control'
+                }
+            ),
+            'number_of_guests': forms.NumberInput(
+                attrs={
+                    'min': 1,
+                    'class': 'form-control'
+                }
+            ),
+            'special_requests': forms.Textarea(
+                attrs={
+                    'rows': 3,
+                    'class': 'form-control',
+                    'placeholder': 'Any special requests or notes'
+                }
+            ),
+        }
+        labels = {
+            'booking_date': 'Booking Date',
+            'booking_time': 'Booking Time',
+            'number_of_guests': 'Number of Guests',
+            'special_requests': 'Special Requests (optional)',
+        }
+        help_texts = {
+            'booking_date': 'Select a new date for your booking.',
+            'booking_time': 'Select a new time for your booking.',
+            'number_of_guests': 'Update number of guests if it changed.',
+            'special_requests': 'Let us know anything we should prepare.',
         }

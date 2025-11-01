@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+
+{% block title %}My Bookings{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-12 col-lg-10 mx-auto">
+        <h1 class="mb-4">My Bookings</h1>
+
+        <p class="text-muted">
+            These are your upcoming and past bookings. You can edit or delete a booking here.
+        </p>
+
+        {% if bookings %}
+            <div class="table-responsive">
+                <table class="table table-striped align-middle">
+                    <thead class="table-dark">
+                        <tr>
+                            <th scope="col">Date</th>
+                            <th scope="col">Time</th>
+                            <th scope="col">Guests</th>
+                            <th scope="col">Table</th>
+                            <th scope="col">Status</th>
+                            <th scope="col" class="text-end">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for booking in bookings %}
+                        <tr>
+                            <td>{{ booking.booking_date }}</td>
+                            <td>{{ booking.booking_time }}</td>
+                            <td>{{ booking.number_of_guests }}</td>
+                            <td>{{ booking.table.table_number }}</td>
+                            <td>
+                                {% if booking.status == "confirmed" %}
+                                    <span class="badge bg-success">Confirmed</span>
+                                {% elif booking.status == "cancelled" %}
+                                    <span class="badge bg-secondary">Cancelled</span>
+                                {% else %}
+                                    <span class="badge bg-light text-dark">{{ booking.status }}</span>
+                                {% endif %}
+                            </td>
+                            <td class="text-end">
+                                <a href="{% url 'edit_booking' booking.id %}" class="btn btn-sm btn-primary me-2">
+                                    Edit
+                                </a>
+                                <a href="{% url 'delete_booking' booking.id %}" class="btn btn-sm btn-outline-danger">
+                                    Delete
+                                </a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        {% else %}
+            <div class="alert alert-info">
+                You don't have any bookings yet.
+                <a href="{% url 'public_booking' %}" class="alert-link">Make a booking?</a>
+            </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

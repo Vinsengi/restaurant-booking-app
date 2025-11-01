@@ -20,6 +20,7 @@ from django.urls import path, include
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', include('bookings.urls')),  # Redirect root URL to bookings app
+    path('', include('bookings.urls')),
+    path('accounts/', include('accounts.urls')),
 
 ]

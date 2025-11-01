@@ -3,238 +3,149 @@
 - [Live Appliction](https://restaurant-booking-vital-83aa0e106c92.herokuapp.com/)
 ---
 
-# 🍽️ Restaurant Booking Website
+## 🏠 Overview
 
-Welcome to our **Restaurant Booking Website**! A full-featured web application for a restaurant that allows visitors to::
+**Chez Mama** is a full-featured Django web application for managing restaurant bookings, designed to celebrate traditional **Rwandan cuisine** and enhance the dining experience through technology.  
 
-- 📜 Browse our traditional Rwandan meals on our menu of delicious dishes with a pagination 
-- 🍽️ Book a table online and even choose your dish in advance  
-- 📧 Get email confirmation when your booking is successful
-- ❌ Be able to cancel your booking just by a click of a button
+Visitors can:  
+- 📜 Browse our delicious menu (with images and pagination)  
+- 🍽️ Book a table online and optionally choose a dish in advance  
+- 📧 Receive confirmation emails automatically  
+- ❌ Cancel a booking with one click  
 
-Built with love and powered by Django, it’s here to make your dining experience smooth and simple.
-
-
+---
 ## 🎯 Purpose
 
-This app is designed to help small and medium-sized restaurants:
-- The site owner would like the ability to take online bookings for their customers
-- Accept and manage table reservations online.
-- Display an interactive and image-rich menu.
-- Automate table availability checks to avoid double-bookings.
-- Store and serve images reliably through Cloudinary.
-- Manage cancellations
-- stay in touch with customers through feedback and contact us form
-- showcase the reviews got
-- The user would like to book one or more guests for a meal in a restaurant and a particular time and date
+This application helps small and medium-sized restaurants:
+- Accept and manage **online reservations**
+- Prevent **double-bookings** through automated availability checks
+- Display an **interactive, image-rich menu**
+- Store and serve media securely via **Cloudinary**
+- Manage **customer feedback and cancellations**
+- Keep clients engaged through **email notifications**
+- Showcase **reviews and Rwandan dishes** to global visitors
 
 ---
 
 ## 🚀 Features
 
-- **Menu listing**: Menu items stored in a database (with image support and availability).
-- **Booking system**: Users can book a table based on the number of guests and optionally book a specific dish.
-- ** Multiple table occupancies
-- ** Cancel booking option
-- **Admin panel**: Full Django admin for managing bookings, menu items, and customer feedback.
-- **Image uploads**: Media support for dish images.
-- **Email notifications**: Configurable SMTP setup for email confirmation.
-- **Responsive UI**: Clean layout using Bootstrap classes.
-- **Pagination**: Menu items are paginated for a better user experience.
-🔄 **Real-time table availability preview**: Show live feedback to users about available time slots before submitting the booking form.
-- ** etc.
+- 📋 **Menu listing** – Dishes stored in the database with images and availability  
+- 🍽️ **Booking system** – Users can reserve a table based on number of guests  
+- 🧑‍🤝‍🧑 **Automatic table allocation** – Matches group size to available tables  
+- ❌ **Cancel booking option** – Simple public cancellation form  
+- 🔐 **User authentication** – Register, login, and manage personal bookings  
+- 🛠️ **Admin panel** – Manage menu items, bookings, and feedback  
+- 🌄 **Cloudinary image uploads** for menu items  
+- ✉️ **Email confirmations** via SMTP or console backend  
+- 📱 **Responsive Bootstrap UI**  
+- 🔄 **Real-time table availability preview**  
+- 📑 **Pagination** for menus and feedback lists  
 
 ---
 
----
+## 🔐 User Authentication & CRUD Functionality
 
-## 📦 Other Features
+The application includes a **complete authentication system** and full CRUD features:
 
-- ✅ Public booking form with live table availability
-- ✅ Automatic table assignment based on number of guests
-- ✅ Menu with image upload and Cloudinary integration
-- ✅ Get Feedback from the customers / public
-- ✅ Prevents double bookings for the same table/date/time
-- ✅ Stores customer details with duplicate-check logic
-- 📱 **Responsive UI improvements**: Improve the mobile layout and form usability on small screens.
-- 💬 **Customer feedback form improvements**: Include rating stars and comment moderation in the feedback system.
-- Admin Email notifications for every feedback
+| CRUD Action | Description | Access Control |
+|--------------|-------------|----------------|
+| **Create** | Users can create new bookings via the booking form | Logged-in users & public visitors |
+| **Read** | Users view their own bookings under **My Bookings** | Logged-in users |
+| **Update** | Users can edit existing bookings | Only booking owner |
+| **Delete** | Users can cancel or delete bookings | Only booking owner |
 
----
-## 🛠️ Technologies Used
-
-- Django 5.2.1
-- PostgreSQL (for production) / SQLite (for development)
-- HTML/CSS/JavaScript (Bootstrap)
-- Python 3.12
-- cloudinary for images storage online
-- [python-decouple](https://github.com/HBNetwork/python-decouple)
-- [whitenoise](http://whitenoise.evans.io/en/stable/) for static file handling
+🛡 **Defensive Design**
+- Unauthorized users cannot access `/my-bookings/` or modify others’ bookings.  
+- Direct URL access to another user’s booking redirects or denies access.  
+- Forms validate dates, guest numbers, and phone numbers with server-side checks.
 
 ---
 
-## 📦 Setup Instructions (Local Development)
+## 🧠 Technologies Used
 
-### 1. Clone the repository
+- 🐍 **Python 3.12**  
+- ⚙️ **Django 5.2.1**  
+- 🗄️ **PostgreSQL** (production) / **SQLite** (development)  
+- 🎨 **HTML5 / CSS3 / Bootstrap 5.3**  
+- ☁️ **Cloudinary** – for media hosting  
+- 📦 **Whitenoise** – static file serving  
+- 🔑 **python-decouple** – secure environment variable management  
+- 📨 **SMTP / Console Email Backend**
 
-```bash
-git clone https://github.com/your-username/restaurant-booking.git
-cd restaurant-booking
-```
+---
+## 🎨 Design
 
-### 2. Create a Virtual Environment
+The visual design of Chez Mama is intentionally warm and culturally grounded:
+- Color accents are inspired by Rwandan aesthetics (earth tones, greens, warm yellows).
+- Layout is mobile-first using Bootstrap 5.3.
+- Content is organized into clear sections: hero area, menu cards with images, call-to-action buttons for booking.
 
-```bash
-python -m venv venv
-source venv/bin/activate  # On Windows: venv\Scripts\activate
-```
+### Wireframes
+Initial wireframes were created for:
+- Home page
+- Menu page
+- Booking flow
+- "My Bookings" dashboard
 
-### 3. Install Dependencies
+These wireframes guided layout decisions such as:
+- Top navigation bar with clear calls to action (Book a Table, Menu, Contact)
+- Card-based menu items with image + description
+- A focused booking form with only essential inputs
 
-```bash
-pip install -r requirements.txt
-```
+(Note: wireframes are available in the project planning folder and informed the final responsive layout.)
 
-### 4. Setup Environment Variables
+---
+## 🧭 Quick Links
 
-Create a `.env` file in the root directory:
-
-```dotenv
-SECRET_KEY=your_django_secret_key
-DEBUG=True
-
-# Email settings
-EMAIL_HOST=smtp.gmail.com
-EMAIL_PORT=587
-EMAIL_USE_TLS=True
-EMAIL_HOST_USER=your_email@gmail.com
-EMAIL_HOST_PASSWORD=your_app_password
-DEFAULT_FROM_EMAIL=your_email@gmail.com
-NOTIFICATION_FROM_EMAIL
-
-# PostgreSQL (used by Heroku)
-DATABASE_URL=postgres://user:password@host:port/dbname
-```
-
-### 5. Apply Migrations
-
-```bash
-python manage.py makemigrations
-python manage.py migrate
-```
-
-### 6. Create a Superuser
-
-```bash
-python manage.py createsuperuser
-```
-
-### 7. Run the Development Server
-
-```bash
-python manage.py runserver
-```
+| Document | Description |
+|-----------|-------------|
+| [🧪 TESTING.md](./TESTING.md) | Full record of all testing (manual, automated, and validation checks). |
+| [✅ VALIDATION.md](./VALIDATION.md) | Evidence of HTML, CSS, Python (PEP8), and Lighthouse validation. |
+| [🚀 DEPLOYMENT.md](./DEPLOYMENT.md) | Step-by-step instructions for deploying locally and to Heroku. |
+| [🙏 CREDITS.md](./CREDITS.md) | References, acknowledgments, and image attributions. |
 
 ---
 
-## 🌍 Deploying to Heroku
+## 🏁 Deployment Summary
 
-### 1. Prerequisites
+- Hosted on **Heroku** using **Gunicorn**.  
+- Static assets served by **Whitenoise**.  
+- Media assets hosted by **Cloudinary**.  
+- PostgreSQL database configured via **dj-database-url**.
+| [🚀 DEPLOYMENT.md](./DEPLOYMENT.md) | Step-by-step instructions for deploying locally and to Heroku. |
 
-- Install [Heroku CLI](https://devcenter.heroku.com/articles/heroku-cli)
-- Run `heroku login`
-- Create a Heroku account
-
-### 2. Setup Heroku
-
-```bash
-heroku create your-app-name
-```
-
-### 3. Add Heroku PostgreSQL
-
-```bash
-heroku addons:create heroku-postgresql:hobby-dev
-```
-
-### 4. Set Environment Variables on Heroku
-
-```bash
-heroku config:set SECRET_KEY=your_django_secret_key
-heroku config:set DEBUG=False
-heroku config:set ALLOWED_HOSTS=your-app-name.herokuapp.com
-
-# Email variables
-heroku config:set EMAIL_HOST=smtp.gmail.com
-heroku config:set EMAIL_PORT=587
-heroku config:set EMAIL_USE_TLS=True
-heroku config:set EMAIL_HOST_USER=your_email@gmail.com
-heroku config:set EMAIL_HOST_PASSWORD=your_app_password
-heroku config:set DEFAULT_FROM_EMAIL=your_email@gmail.com
-```
-
-### 5. Prepare for Heroku
-
-Ensure these files exist:
-
-- `Procfile`
-
-```makefile
-web: gunicorn restaurant_booking.wsgi
-```
-
-- `requirements.txt`
-
-```bash
-pip freeze > requirements.txt
-```
-
-- `runtime.txt` (optional)
-
-```
-python-3.12.6
-```
-
-### 6. Deploy
-
-```bash
-git add .
-git commit -m "Ready for Heroku deployment"
-git push heroku main
-```
-
-### 7. Run Migrations on Heroku
-
-```bash
-heroku run python manage.py migrate
-heroku run python manage.py createsuperuser
-```
 
 ---
 
-## 📸 Traditional Dishes in the Menu
 
-The app highlights dishes such as:
+## 📸 Traditional Dishes Showcased
 
-- Isombe 🥬
-- Akabenz 🐖
-- Ubugali 🍚
-- Ibihaza 🎃
-- Melange 🍲
-- Ibirayi 🍟
-- etc.
+The menu celebrates Rwandan culture with authentic dishes:
 
-Each is displayed with consistent image styling and pagination for better UX.
+| Dish    | Emoji | Description                      |
+| ------- | ----- | -------------------------------- |
+| Isombe  | 🥬    | Cassava leaves with peanut sauce |
+| Akabenz | 🐖    | Crispy fried pork                |
+| Ubugali | 🍚    | Cassava or maize meal            |
+| Ibihaza | 🎃    | Pumpkin dish                     |
+| Melange | 🍲    | Mixed street dish                |
+| Ibirayi | 🍟    | Fried potatoes                   |
+
+Images are stored and served via Cloudinary with pagination for smooth browsing.
 
 ---
 
 ## 📧 Email Notifications
 
-The system is configured to send confirmation emails upon successful bookings using SMTP credentials.
+▫️Upon booking, a confirmation email is sent automatically.
 
-Email comes with a cancellation link.
+▫️Includes customer details, date/time, and special requests.
 
-if user choses to cancel the booking, they will be asked if they are sure, and if they are, they will cancel and a cancellation-success will be shown.
+▫️In development, Django prints emails to the console.
+
+▫️In production, it uses SMTP via Gmail or another provider.
+
+▫️Cancellation emails and links are supported for easy booking management.
 
 ---
 
@@ -259,160 +170,43 @@ restaurant_booking/
 ```
 
 ---
+## 🧩 Agile Development Approach
 
-## 📦 Setup Instructions (Local Development)
+The project followed Agile methodology with iterative sprints and continuous feedback:
 
-### 1. Clone the repository
+🗓 Short sprints delivering working features
 
-```bash
-git clone https://github.com/your-username/restaurant-booking.git
-cd restaurant-booking
-```
+🗂 User stories representing real customer/admin workflows
 
-# 🍽️ Django Restaurant Booking App with Cloudinary Integration
+🔁 Continuous testing & iteration for improvements
 
-This is a web-based restaurant booking system built using Django. It features a public booking interface, a live table availability checker, a visual menu with images hosted on Cloudinary, and an admin panel for managing bookings and menu items.
+📊 Backlog management for bug fixes and new features
 
----
-
-## 🍴 Fork This Project
-
-1. **Fork this repository** using the GitHub UI.
-2. **Clone your fork:**
-   ```bash
-   git clone https://github.com/your-username/your-forked-repo.git
-   cd your-forked-repo
-   ```
-
-3. **Create a virtual environment & install dependencies:**
-   ```bash
-   python -m venv venv
-   source venv/bin/activate  # Windows: venv\Scripts\activate
-   pip install -r requirements.txt
-   ```
-
-4. **Set up Cloudinary:**
-   Add these credentials to a `.env` file or your `settings.py`:
-   ```env
-   CLOUDINARY_CLOUD_NAME=your_cloud_name
-   CLOUDINARY_API_KEY=your_api_key
-   CLOUDINARY_API_SECRET=your_api_secret
-   ```
-
-5. **Apply migrations and run server:**
-   ```bash
-   python manage.py migrate
-   python manage.py runserver
-   ```
-
----
-
-## ⚙️ Cloudinary Configuration
-
-In `settings.py`, add:
-
-```python
-INSTALLED_APPS = [
-    ...
-    'cloudinary',
-    'cloudinary_storage',
-    'django.contrib.staticfiles',
-    ...
-]
-
-DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
-
-CLOUDINARY_STORAGE = {
-    'CLOUD_NAME': 'your_cloud_name',
-    'API_KEY': 'your_api_key',
-    'API_SECRET': 'your_api_secret',
-}
-
-MEDIA_URL = '/media/'
-```
-
----
-
-## 📁 Models Overview
-
-Example `MenuItem` model:
-
-```python
-from django.db import models
-
-class MenuItem(models.Model):
-    name = models.CharField(max_length=100)
-    description = models.TextField()
-    image = models.ImageField(upload_to='menu_images/')
-```
-
----
-
-## ✅ Manual Testing
-
-| Feature                    | Steps                                                                 |
-|---------------------------|-----------------------------------------------------------------------|
-| Booking                   | Visit `/book/` and complete the form. Check DB/admin for record.     |
-| Duplicate Prevention      | Try booking same table/date/time twice — should be blocked.          |
-| Cancel Booking            | Use `/cancel/` to enter details and verify it's removed.             |
-| Menu Image Display        | Upload a menu item with an image and verify it shows on `/menu/`.    |
-and more...
----
-
-## 🧪 Automated Testing - optional and did not do it yet by the submission time
-
-Run all tests with:
-
-```bash
-python manage.py test
-```
-
-Example test:
-
-```python
-from django.test import TestCase
-from .models import Booking
-
-class BookingTestCase(TestCase):
-    def test_booking_creation(self):
-        booking = Booking.objects.create(name='John', email='john@example.com', ...)
-        self.assertEqual(Booking.objects.count(), 1)
-```
-
-Use `unittest.mock` or `pytest-django` to simulate image uploads if needed.
-
----
-
-## 🧰 Deployment Notes
-
-To deploy this project:
-- Ensure all Cloudinary credentials are added to the environment.
-- Use Heroku or any cloud service with Django + PostgreSQL support.
-- Set `DEBUG = False` and configure `ALLOWED_HOSTS` in production.
-
----
-
-## 🙋 Contributing
-
-Contributions are welcome! Please fork the repository, create a new branch, and open a pull request with your improvements or fixes.
-
+⚡ Adaptive planning based on stakeholder feedback
 
 
 ---
 
-## 🚀 Features Planned for the Next Release
+
+## 🚀 Planned Future Enhancements
 
 Here are upcoming improvements and features planned for the next version of the app:
 
-- 📨 **Email notifications**: Send cancellation emails to customers automatically after thy cancel.
-- 🌐 **Multilingual support**: Add basic internationalization (i18n) starting with English and French.
-- 🔐 **Admin role permissions**: Introduce finer-grained permissions to allow different admin roles.
-- 🗓️ **Calendar view for admin bookings**: Add a calendar-style UI to visualize daily bookings.
-- ⚙️ **Optional table selection**: Let repeat customers optionally select a preferred table if available.
-- 📅 ** Add and display date and time the restaurant is open. currently, the assumption is that it is 24/7 open and ready to serve customers.
-- 🗺️ ** Add map fucntionaly
-- 💳💶 ** online ordering and Add payment functionalities
-- 🥘 ** Logo of Chez Mama Restaurant
+📨 Send cancellation confirmation emails
+
+🌐 Add multilingual support (EN/FR)
+
+🔐 Add role-based admin permissions
+
+🗓️ Calendar view for admin bookings
+
+📅 Define restaurant opening hours (currently 24/7 assumed)
+
+🗺️ Add map integration
+
+💳 Enable online ordering & payment
+
+🥘 Add official Chez Mama logo
 
 Stay tuned and watch the GitHub repo for upcoming milestones and issues.
 
@@ -420,69 +214,17 @@ Stay tuned and watch the GitHub repo for upcoming milestones and issues.
 
 ## 🐞 Known Bugs
 
-The following issues have been identified and are under review:
+| Issue                            | Description                             |
+| -------------------------------- | --------------------------------------- |
+| 🖼️ Admin image preview          | Requires refresh to show uploaded image |
+| 🕐 Double booking race condition | Rare if two users submit simultaneously |
+| 📧 Cancellation email            | Not implemented yet                     |
+| 📆 Date/time picker              | Mobile browser inconsistencies          |
+| 📱 Menu layout                   | Overlaps on very narrow screens         |
 
-- ⚠️ **Admin panel menu image preview**: Uploaded images sometimes don’t render in the admin panel preview after saving — requires manual refresh.
-- 🕐 **Booking time slot conflicts**: In rare race conditions, double bookings may occur if two users submit forms simultaneously.
-- 📧 **Missing cancellation email confirmation**: Cancellation emails are not yet implemented, so users do not receive acancellation email receipt.
-- 📆 **Date/time picker browser incompatibility**: Some mobile browsers render the date/time input fields inconsistently.
-- 📱 **Menu layout on small screens**: Menu items and images may overlap or stack poorly on very narrow screens.
-
-These bugs are documented and will be addressed in future releases. Contributions and bug reports are welcome via GitHub Issues.
 
 ---
 
-## 🧩 Agile Development Approach
-
-This project follows Agile development principles to ensure continuous delivery, transparency, and adaptability. Key practices include:
-
-- 📅 **Iterative Releases**: The app evolves through clearly defined development phases (sprints), each delivering working features.
-- 📋 **Backlog Grooming**: New features, bugs, and improvements are maintained in a prioritized backlog for review each sprint.
-- 👥 **User Stories**: Development tasks are based on user stories that reflect real needs of restaurant customers and admins.
-- 🔁 **Continuous Feedback**: Manual and automated testing at the end of each sprint ensures feedback loops are fast and relevant.
-- 🔄 **Flexibility**: The product roadmap adapts based on testing results, user experience insights, and stakeholder input.
-
-This approach helps the team stay focused on delivering business value quickly while keeping the project highly maintainable and user-centered.
-
-
-## 🖥️ For Non-Developers: How This Was Built
-
-This website was created using a platform called **Django** (a tool developers use to build websites). It connects to a database that stores all our dishes and booking details.
-
-- Your bookings are saved securely  
-- Dish pictures are added by the admin team  
-- Emails are sent automatically when you book
-
----
-
-## 🚀 How We Shared This Site with the World (Deployment)
-
-We used **Heroku**, a hosting service, to put the website online. Think of it like putting our restaurant on Google Maps – now everyone can find and use it!
-
-Steps involved:
-1. We signed up on Heroku
-2. Connected our website to Heroku
-3. Set up the database and email settings there
-4. Published it online
-
----
-
-## 🗂️ About the Menu Page
-
-On the **menu page**, you’ll find:
-- Paginated list (like flipping pages of a photo album)
-- Dish names and pictures
-- “Book this dish” buttons, so you can reserve your favorite easily
-
----
-
-## 📧 About Email Confirmation
-
-When you book:
-- An email is sent automatically to confirm your reservation
-- It includes your name, booking time, and selected dish (if any)
-
----
 
 ## 🌍 Want to Help or Share Ideas?
 
@@ -491,97 +233,23 @@ You can reach out to the admin team with suggestions, traditional dish ideas, or
 Thank you for visiting our restaurant site – enjoy your meal! 🇷🇼🍛
 
 ---
+## 🙋 Contributing
 
-## 🧰 Complete Local Setup Guide
-
-### 1. Create a Virtual Environment
-
-```bash
-python -m venv venv
-source venv/bin/activate  # On Windows: venv\Scripts\activate
-```
-
-### 2. Install Dependencies
-
-```bash
-pip install -r requirements.txt
-```
-
-### 3. Setup Environment Variables
-
-Create a `.env` file in the root directory:
-
-```dotenv
-SECRET_KEY=your_django_secret_key
-DEBUG=True
-
-# Email settings
-EMAIL_HOST=smtp.gmail.com
-EMAIL_PORT=587
-EMAIL_USE_TLS=True
-EMAIL_HOST_USER=your_email@gmail.com
-EMAIL_HOST_PASSWORD=your_app_password
-DEFAULT_FROM_EMAIL=your_email@gmail.com
-
-# PostgreSQL (used by Heroku)
-DATABASE_URL=postgres://user:password@host:port/dbname
-```
-
-### 4. Apply Migrations
-
-```bash
-python manage.py makemigrations
-python manage.py migrate
-```
-
-### 5. Create a Superuser
-
-```bash
-python manage.py createsuperuser
-```
-
-### 6. Run the Development Server
-
-```bash
-python manage.py runserver
-```
+Contributions are welcome! Please fork the repository, create a new branch, and open a pull request with your improvements or fixes.
 
 ---
 
-## 🗂 Project Structure in brief 
 
-```bash
-restaurant_booking/
-│
-├── bookings/              # Main app
-│   ├── migrations/
-│   ├── models.py
-│   ├── views.py
-│   ├── urls.py
-│   └── templates/bookings/
-│
-├── media/                 # Dish images
-├── static/                # CSS, JS, images
-├── .env                   # Environment secrets (not committed)
-├── Procfile
-├── requirements.txt
-└── manage.py
-```
+## 🙏 Credits & Acknowledgments
 
----
+| [🙏 CREDITS.md](./CREDITS.md) | References, acknowledgments, and image attributions. |
 
-## ✅ Future Enhancements
+##💡 Summary
 
-- User authentication
-- Dish rating and reviews
-- Multilingual support
+✅ Full CRUD and Authentication
+✅ Responsive Bootstrap UI
+✅ Email + Cloudinary Integration
+✅ Deployed on Heroku with PostgreSQL
+✅ Cultural storytelling through traditional dishes
 
-## 🤝 Credit and Aknowledgments
-
-- Inspired by traditional Rwandan cuisine and culture.
-
-- Thanks to the AI
-
-- Thanks to Code Institute student support Team and Student care Team for their support
-
-- Special thanks to the Equip-Magu initiative for educational empowerment for allowing us to use the website as a fall-back during the construction of chez mama restaurant's website and adding it as part of "visit our other work"
+Enjoy your virtual meal at Chez Mama! 🍛

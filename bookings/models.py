@@ -4,8 +4,6 @@ from django.conf import settings
 from datetime import datetime
 import uuid
 
-# Create your models here.
-
 
 class Customer(models.Model):
     name = models.CharField(max_length=100)
@@ -30,48 +28,59 @@ class Table(models.Model):
 
 
 class Booking(models.Model):
-    customer = models.ForeignKey(Customer, on_delete=models.CASCADE)
-    number_of_guests = models.PositiveIntegerField(default=1)
-    table = models.ForeignKey(Table, on_delete=models.CASCADE)
-    booking_date = models.DateTimeField()
-    booking_time = models.TimeField()
-    created_at = models.DateTimeField(auto_now_add=True)    
-    updated_at = models.DateTimeField(auto_now=True)
-    updated_at = models.DateTimeField(auto_now=True)   # Automatically update the time when a booking is modified 
-    status = models.CharField(max_length=20, choices=[('confirmed', 'Confirmed'), ('cancelled', 'Cancelled')], default='confirmed')     # Status can be 'confirmed' or 'cancelled'
-    special_requests = models.TextField(blank=True, null=True)  # Optional field for any special requests by the customer
-    cancellation_token = models.UUIDField(default=uuid.uuid4, unique=True, null=True, blank=True)
+   
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        related_name='bookings',
+        null=True,
+        blank=True
+    )
 
+    customer = models.ForeignKey(Customer, on_delete=models.CASCADE)
+    number_of_guests = models.PositiveIntegerField(
+        default=1
+    )
+    table = models.ForeignKey(Table, on_delete=models.CASCADE)
+    booking_date = models.DateField()
+    booking_time = models.TimeField()
+
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    status = models.CharField(
+        max_length=20,
+        choices=[
+            ('confirmed', 'Confirmed'),
+            ('cancelled', 'Cancelled'),
+        ],
+        default='confirmed'
+    )
+
+    special_requests = models.TextField(blank=True, null=True)
+    cancellation_token = models.UUIDField(
+        default=uuid.uuid4,
+        unique=True,
+        null=True,
+        blank=True,
+    )
+
+    class Meta:
+        ordering = ['-booking_date']
+        unique_together = ('table', 'booking_date', 'booking_time')
 
     def __str__(self):
         return (
-            f"Booking for {self.customer} at {self.booking_date} - "
-            f"Table {self.table.table_number} - Status: {self.status}"
+            f"Booking for {self.customer} on {self.booking_date} "
+            f"at {self.booking_time} - Table {self.table.table_number} "
+            f"- Status: {self.status}"
         )
-
-    class Meta:
-        ordering = ['-booking_date']    # Orders bookings by booking date in descending order
-        unique_together = ('table', 'booking_date', 'booking_time')  # Ensures that a table cannot be booked for the same date and time by different customers
-    # Automatically set the status based on the booking date
-
-    def save(self, *args, **kwargs):
-        # Convert string to date object if necessary
-        if isinstance(self.booking_date, str):
-            try:
-                self.booking_date = datetime.strptime(self.booking_date, "%Y-%m-%d").date()
-            except ValueError:
-                self.booking_date = timezone.now().date()  # fallback to today
-         
-        # Automatically set the status based on the booking date
-        # if self.booking_date < timezone.now().date():
-        #     self.status = 'cancelled'  # Automatically cancel bookings in the past 
-        super().save(*args, **kwargs)
 
 
 class Cancellation(models.Model):
     booking = models.OneToOneField(Booking, on_delete=models.CASCADE)
-    cancellation_date = models.DateTimeField(auto_now_add=True)  # Automatically set the cancellation date when a cancellation is created
-    reason = models.TextField(blank=True, null=True)  # Optional field for the reason of cancellation
+    cancellation_date = models.DateTimeField(auto_now_add=True)
+    reason = models.TextField(blank=True, null=True)
     token = models.UUIDField(default=uuid.uuid4, editable=False, unique=True)
 
     def __str__(self):
@@ -131,7 +140,7 @@ class Feedback(models.Model):
 
 
 class ContactMessage(models.Model):
-    customer  = models.ForeignKey(
+    customer = models.ForeignKey(
         Customer,
         null=True, blank=True,
         on_delete=models.SET_NULL,
