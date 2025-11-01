@@ -1,8 +1,9 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.contrib.auth import login
-from .forms import RegisterForm  # we'll define this form
-                                # (UserCreationForm-based)
+from .forms import RegisterForm
+
+
 def register(request):
     if request.method == "POST":
         form = RegisterForm(request.POST)

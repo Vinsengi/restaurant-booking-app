@@ -232,3 +232,7 @@ LOGGING = {
         },
     },
 }
+
+LOGIN_REDIRECT_URL = 'my_bookings'  # after successful login
+LOGOUT_REDIRECT_URL = 'home'        # after logout
+LOGIN_URL = 'login'                 # where to send unauthenticated users
