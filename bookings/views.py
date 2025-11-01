@@ -282,9 +282,9 @@ def cancel_success_view(request):
 
 @require_POST
 def contact_submit(request):
-    name  = request.POST['name'].strip()
+    name = request.POST['name'].strip()
     email = request.POST['email'].strip().lower()
-    text  = request.POST['message'].strip()
+    text = request.POST['message'].strip()
 
     # 1) Find-or-create the customer
     customer, created = Customer.objects.get_or_create(
@@ -304,13 +304,16 @@ def contact_submit(request):
     )
 
     # 3) Send notification email
-    send_mail(
-        subject=f"[Contact] {name} wrote in",
-        message=f"From: {name} <{email}>\n\n{text}",
-        from_email=settings.DEFAULT_FROM_EMAIL,
-        recipient_list=[settings.NOTIFY_CONTACT_EMAIL],
-        fail_silently=False,
-    )
+    try:
+        send_mail(
+            subject=f"[Contact] {name} wrote in",
+            message=f"From: {name} <{email}>\n\n{text}",
+            from_email=settings.DEFAULT_FROM_EMAIL,
+            recipient_list=[settings.NOTIFY_CONTACT_EMAIL],
+            fail_silently=False,
+        )
+    except Exception:
+        pass
 
     # 4) Flash success & redirect
     messages.success(request, "Thanks! We’ve received your message.")

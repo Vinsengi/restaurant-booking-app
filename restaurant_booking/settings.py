@@ -136,36 +136,36 @@ STATICFILES_DIRS = [
 ]
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
+# Cloudinary configuration
+
+CLOUDINARY_STORAGE = {
+        'CLOUD_NAME': config('CLOUD_NAME'),
+        'API_KEY': config('CLOUD_API_KEY'),
+        'API_SECRET': config('CLOUD_API_SECRET'),
+}
+
 if DEBUG:
-    # Development: simple/static, no manifest required
     STORAGES = {
         "default": {
-            # In dev you can keep Cloudinary OR temporarily use FileSystemStorage
-            # If Cloudinary is causing errors locally, switch this to FileSystemStorage.
-            "BACKEND": "django.core.files.storage.FileSystemStorage",
+            # use Cloudinary storage for uploaded images in dev too
+            "BACKEND": "cloudinary_storage.storage.MediaCloudinaryStorage",
         },
         "staticfiles": {
+            # in dev, just use normal staticfiles storage
             "BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage",
         },
     }
 else:
-    # Production: Cloudinary for media, WhiteNoise for static
     STORAGES = {
         "default": {
+            # still Cloudinary in production
             "BACKEND": "cloudinary_storage.storage.MediaCloudinaryStorage",
         },
         "staticfiles": {
+            # Whitenoise in prod
             "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
         },
     }
-    # Cloudinary configuration
-    CLOUDINARY_STORAGE = {
-        'CLOUD_NAME': config('CLOUD_NAME'),
-        'API_KEY': config('CLOUD_API_KEY'),
-        'API_SECRET': config('CLOUD_API_SECRET'),
-    }
-
-
 # Modern Django 5.x storage configuration
 # STORAGES = {
 #     "default": {
@@ -183,6 +183,10 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+DEFAULT_FROM_EMAIL = "dev@example.com"
+NOTIFY_CONTACT_EMAIL = "dev@example.com"
+
 if DEBUG:
     EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 else:
@@ -192,9 +196,14 @@ else:
     EMAIL_USE_TLS = config('EMAIL_USE_TLS', default=True, cast=bool)
     EMAIL_HOST_USER = config('EMAIL_HOST_USER', default='')
     EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD', default='')
-    DEFAULT_FROM_EMAIL = config('DEFAULT_FROM_EMAIL', default='no-reply@chezmama.com')
-    NOTIFY_CONTACT_EMAIL = config('NOTIFY_CONTACT_EMAIL', default=EMAIL_HOST_USER)
-
+    DEFAULT_FROM_EMAIL = config(
+        'DEFAULT_FROM_EMAIL',
+        default='no-reply@chezmama.com',
+    )
+    NOTIFY_CONTACT_EMAIL = config(
+        'NOTIFY_CONTACT_EMAIL',
+        default=EMAIL_HOST_USER,
+    )
 
 SITE_URL = config('SITE_URL', default='http://localhost:8000')
 SITE_NAME = config('SITE_NAME', default='Chez Mama')
@@ -233,6 +242,6 @@ LOGGING = {
     },
 }
 
-LOGIN_REDIRECT_URL = 'my_bookings'  # after successful login
-LOGOUT_REDIRECT_URL = 'home'        # after logout
-LOGIN_URL = 'login'                 # where to send unauthenticated users
+LOGIN_REDIRECT_URL = 'my_bookings'
+LOGOUT_REDIRECT_URL = 'home'
+LOGIN_URL = 'login'

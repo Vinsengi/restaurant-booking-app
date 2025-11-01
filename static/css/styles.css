@@ -6,8 +6,11 @@ body {
     font-weight: 600;
     letter-spacing: 0.03em;
 }
-.about-hero {
-    max-height: 400px;
-    object-fit: cover;
-    width: 100%;
+
+
+.footer {
+    background-color: #343a40; /* dark background */
+    color: #ffffff; /* white text */
+    padding: 20px 0;
+    text-align: center;
 }
