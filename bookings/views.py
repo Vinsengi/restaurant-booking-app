@@ -47,7 +47,7 @@ def public_booking_view(request):
             booking_time = form.cleaned_data['booking_time']
             number_of_guests = form.cleaned_data['number_of_guests']
             special_requests = form.cleaned_data.get('special_requests', '')
-     
+  
             # Log the booking attempt
             logger.info(
                 f"Booking attempt: {name}, {email}, {phone}, "
@@ -119,43 +119,48 @@ def public_booking_view(request):
 
                     selected_table = available_tables.first()
 
-                    # 📝 Create the booking
-                    user_obj = request.user if request.user.is_authenticated else None
-                    new_booking = Booking.objects.create(
-                        customer=customer,
-                        table=selected_table,
-                        number_of_guests=number_of_guests,
-                        booking_date=booking_date,
-                        booking_time=booking_time,
-                        special_requests=special_requests,
-                        user=user_obj
+                # 📝 Create the booking
+                user_obj = request.user if request.user.is_authenticated else None
+                new_booking = Booking(
+                    customer=customer,
+                    table=selected_table,
+                    number_of_guests=number_of_guests,
+                    booking_date=booking_date,
+                    booking_time=booking_time,
+                    special_requests=special_requests,
+                    user=user_obj,
+                    menu_item=menu_item,
+                )
+                new_booking.save()
+                # Cancellation.objects.create(
+                #     booking=new_booking)
+                logger.info(
+                    "Booking created successfully: %s for %s at %s at %s for %s guests on Table: %s",
+                    new_booking.id,
+                    customer.name,
+                    booking_date,
+                    booking_time,
+                    number_of_guests,
+                    selected_table.table_number,
+                )
+                try:
+                    send_booking_email(new_booking, customer)
+                except Exception:
+                    logger.exception("Email sending failed.")
+                    messages.warning(
+                        request,
+                        "Booking confirmed, but there was an issue sending the confirmation email."
                     )
-                    # Cancellation.objects.create(
-                    #     booking=new_booking)
-                    logger.info(
-                        f"Booking created successfully: {new_booking.id} "
-                        f"for {customer.name} at {booking_date} "
-                        f"at {booking_time} for {number_of_guests} guests."
-                        f"on Table: {selected_table.table_number}"
+                else:
+                    messages.success(
+                        request,
+                        f"Your booking for {booking_date} at {booking_time.strftime('%H:%M')} was successful! A confirmation email has been sent to {email}."
                     )
-                    try:
-                        send_booking_email(new_booking, customer)
-                    except Exception as e:
-                        logger.exception("Email sending failed.")
-                        messages.warning(
-                            request,
-                            "Booking confirmed, but there was an issue sending the confirmation email."
-                        )
-                    else:
-                        messages.success(
-                            request,
-                            f"Your booking for {booking_date} at {booking_time.strftime('%H:%M')} was successful! A confirmation email has been sent to {email}."
-                    )
-                  
-                    base_url = reverse('booking_success')
-                    query_string = urlencode({'booking_id': new_booking.id})
-                    booking_success_url = f"{base_url}?{query_string}"
-                    return redirect(booking_success_url)
+
+                base_url = reverse('booking_success')
+                query_string = urlencode({'booking_id': new_booking.id})
+                booking_success_url = f"{base_url}?{query_string}"
+                return redirect(booking_success_url)
 
             except IntegrityError:
                 logger.exception("Booking failed due to integrity error.")

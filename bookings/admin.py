@@ -20,7 +20,18 @@ class TableAdmin(admin.ModelAdmin):
 
 @admin.register(Booking)
 class BookingAdmin(admin.ModelAdmin):
-    list_display = ('customer', 'table', 'booking_date', 'booking_time', 'status', 'conflict_warning', 'created_at')
+    list_display = (
+        'id',
+        'customer',
+        'table',
+        'booking_date',
+        'booking_time',
+        'status',
+        'menu_item',
+        'number_of_guests',
+        'conflict_warning',
+        'created_at',
+    )
     search_fields = ('customer__email', 'table__table_number')
     list_filter = ('table', 'booking_date')
 

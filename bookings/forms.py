@@ -13,6 +13,7 @@ class BookingForm(forms.ModelForm):
             'booking_date',
             'booking_time',
             'special_requests',
+            'menu_item',
         ]
         widgets = {
             'booking_date': forms.DateInput(attrs={'type': 'date'}),

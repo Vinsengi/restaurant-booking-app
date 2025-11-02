@@ -27,8 +27,31 @@ class Table(models.Model):
         return f"Table {self.table_number} - Seats: {self.seats} - {'Available' if self.is_available else 'Not Available'}"
 
 
+class MenuItem(models.Model):
+    name = models.CharField(max_length=200)
+    description = models.TextField(blank=True, null=True)
+    price = models.DecimalField(max_digits=7, decimal_places=2)
+    is_available = models.BooleanField(default=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    image = models.ImageField(
+        "Image",
+        upload_to='menu_images',
+        blank=True,
+        null=True
+    )
+
+    class Meta:
+        ordering = ['name']  # Orders menu items by name in ascending order
+        verbose_name = "Menu Item"
+        verbose_name_plural = "Menu Items"
+
+    def __str__(self):
+        return self.name
+
+
 class Booking(models.Model):
-   
+
     user = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE,
@@ -65,9 +88,14 @@ class Booking(models.Model):
         blank=True,
     )
 
-    class Meta:
-        ordering = ['-booking_date']
-        unique_together = ('table', 'booking_date', 'booking_time')
+    menu_item = models.ForeignKey(
+        MenuItem,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name='bookings',
+        help_text="Optional dish the guest wants to pre-order"
+    )
 
     def __str__(self):
         return (
@@ -75,6 +103,20 @@ class Booking(models.Model):
             f"at {self.booking_time} - Table {self.table.table_number} "
             f"- Status: {self.status}"
         )
+
+    class Meta:
+        ordering = ['-booking_date']
+        unique_together = ('table', 'booking_date', 'booking_time')
+
+    def save(self, *args, **kwargs):
+        # Convert string to date object if necessary
+        if isinstance(self.booking_date, str):
+            try:
+                self.booking_date = datetime.strptime(self.booking_date, "%Y-%m-%d").date()
+            except ValueError:
+                self.booking_date = timezone.now().date()
+
+        super().save(*args, **kwargs)
 
 
 class Cancellation(models.Model):
@@ -88,29 +130,6 @@ class Cancellation(models.Model):
             f"Cancellation for {self.booking} on {self.cancellation_date} - "
             f"Reason: {self.reason or 'No reason provided'}"
         )
-
-
-class MenuItem(models.Model):
-    name = models.CharField(max_length=200)
-    description = models.TextField(blank=True, null=True)
-    price = models.DecimalField(max_digits=7, decimal_places=2)
-    is_available = models.BooleanField(default=True)
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
-    image = models.ImageField(
-        "Image",
-        upload_to='menu_images',
-        blank=True,
-        null=True
-    )
-
-    class Meta:
-        ordering = ['name']  # Orders menu items by name in ascending order
-        verbose_name = "Menu Item"
-        verbose_name_plural = "Menu Items"
-
-    def __str__(self):
-        return self.name
 
 
 class Feedback(models.Model):

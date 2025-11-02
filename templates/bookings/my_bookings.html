@@ -20,6 +20,7 @@
                             <th scope="col">Time</th>
                             <th scope="col">Guests</th>
                             <th scope="col">Table</th>
+                            <th scope="col">Pre-ordered Menu Item</th>
                             <th scope="col">Status</th>
                             <th scope="col" class="text-end">Actions</th>
                         </tr>
@@ -31,6 +32,14 @@
                             <td>{{ booking.booking_time }}</td>
                             <td>{{ booking.number_of_guests }}</td>
                             <td>{{ booking.table.table_number }}</td>
+                            <td>
+                                {% if booking.menu_item %}
+                                    {{ booking.menu_item.name }}
+                                {% else %}
+                                    -
+                                {% endif %}
+                            </td>
+
                             <td>
                                 {% if booking.status == "confirmed" %}
                                     <span class="badge bg-success">Confirmed</span>
