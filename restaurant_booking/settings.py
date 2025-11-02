@@ -30,14 +30,15 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = config('SECRET_KEY', default='dev-secret-key-do-not-use-in-production')
 
 
-DEBUG = True
+DEBUG = config('DEBUG', default=True, cast=bool)
 
-_raw_allowed_hosts = config(
+
+ALLOWED_HOSTS = config(
     'ALLOWED_HOSTS',
-    default='127.0.0.1,localhost,restaurant-booking-vital-83aa0e106c92.herokuapp.com'
+    default='127.0.0.1,localhost',
+    cast=Csv(),
 )
-ALLOWED_HOSTS = [h.strip() for h in _raw_allowed_hosts.split(',') if h.strip()]
-ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
+
 
 CSRF_TRUSTED_ORIGINS = config(
     'CSRF_TRUSTED_ORIGINS',
