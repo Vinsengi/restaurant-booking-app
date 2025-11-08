@@ -5,17 +5,20 @@
 {% block content %}
 <section class="py-5">
   <div class="row mb-4">
-    <div class="col-md-8 offset-md-2 text-center">
+    <div class="col-lg-10 mx-auto text-center">
       <h1 class="mb-3">About Chez Mama</h1>
 
-      <img
-        src="{% static 'bookings/images/restaurant.jpg' %}"
-        alt="Chez Mama Restaurant dining interior"
-        class="img-fluid rounded shadow mb-4"
-        style="max-height: 400px; object-fit: cover;"
-        width="1280" height="853"
-        loading="lazy"
-        decoding="async">
+
+      <figure class="mx-auto mb-4" style="max-width: 720px;">
+        <img
+          src="{% static 'bookings/images/restaurant.jpg' %}"
+          alt="Chez Mama Restaurant dining interior"
+          class="img-fluid rounded shadow d-block mx-auto"
+          style="height:auto;"
+          decoding="async"
+          loading="lazy">
+        <figcaption class="visually-hidden">Chez Mama Restaurant interior</figcaption>
+      </figure>
 
       <p class="lead">
         Welcome to <strong>Chez Mama</strong> — where passion meets the plate.
