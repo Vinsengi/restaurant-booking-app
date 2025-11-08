@@ -16,17 +16,36 @@ All validations were performed between **October–November 2025** on the latest
 **Tool Used:** [W3C HTML Validator](https://validator.w3.org/nu/)  
 **Pages Tested:**
 - Home page (`/`)
+
+    ![W3 home page validation - result: Passed](./media/validation_images/html_validation/home_page_valid.png)
+
 - Booking form (`/book/`)
+
+    ![book home page validated -result:passed](./media/validation_images/html_validation/book_page_validated.png)
+
 - Menu page (`/menu/`)
+
+    ![meu page validated by w3 - result - passed](./media/validation_images/html_validation/menu_page_validated.png)
+
+- About us page (`/about/`)
+
+    ![about us page passed validation](./media/validation_images/html_validation/about_page_validated.png)
+
 - Contact page (`/contact/`)
-- Cancel booking (`/cancel/`)
-- Booking success (`/booking-success/`)
+    ![contact us page passed w3 validation](./media/validation_images/html_validation/contact_us_page_validated.png)
+
+- My booking - only available for loged in users (`/my-booking/`)
+
+    ![My booking page - only available for loged in users - passed w3 validation](./media/validation_images/html_validation/my_booking_page_validated.png)
+
+- Login(`/accounts/login/`)
+
+    ![login page passed w3 validation](./media/validation_images/html_validation/login_page_validated.png)
 
 **Result:** ✅ **Passed**
 
 **Notes:**
 - No syntax or structural errors detected.
-- Minor warnings related to ARIA attributes and `<main>` landmarks (Bootstrap defaults) were safely ignored as they do not affect accessibility or rendering.
 - All pages successfully render HTML5-compliant markup.
 
 ---
@@ -36,13 +55,15 @@ All validations were performed between **October–November 2025** on the latest
 **Tool Used:** [W3C CSS Validator](https://jigsaw.w3.org/css-validator/)
 
 **File Validated:**  
-`/static/css/styles.css`
+- `/static/css/styles.css`
+
+    ![css style sheet validated](./media/validation_images/css_validation/css_style_sheet_validated.png)
 
 **Result:** ✅ **No errors found**
 
 **Notes:**
 - The file was confirmed to be free of invalid declarations and duplicate selectors.
-- Vendor-prefixed Bootstrap properties were ignored as recommended.
+
 
 ---
 
@@ -55,7 +76,7 @@ All validations were performed between **October–November 2025** on the latest
 ```bash
 python -m flake8
 
-iles Tested:
+Files Tested:
 
 - bookings/models.py
 
