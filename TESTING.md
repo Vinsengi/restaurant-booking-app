@@ -21,7 +21,7 @@ Testing was conducted in both:
 | Authentication | ✅ Pass | Registration, login, logout verified |
 | Defensive design | ✅ Pass | Unauthorized access blocked |
 | Booking form | ✅ Pass | Prevents double-bookings and invalid dates |
-| Table allocation | ✅ Pass | Automatically assigns smallest available table |
+| Table allocation | ✅ Pass | Automatically assigns available table according to the number of guests |
 | Feedback form | ✅ Pass | Submits ratings and comments successfully |
 | Menu pagination | ✅ Pass | Works across all browsers |
 | Email confirmation | ✅ Pass | SMTP + console email verified |
@@ -40,7 +40,7 @@ Testing was conducted in both:
 | **Create Booking** | Fill public booking form with name, email, date, time | Booking saved & confirmation displayed | Booking saved, confirmation email shown | ✅ |
 | **Read Booking** | View in admin panel or “My Bookings” page | All user bookings visible | Works as expected | ✅ |
 | **Update Booking** | Modify booking from dashboard | Changes saved in DB | Updates reflected immediately | ✅ |
-| **Delete Booking** | Click cancel button | Booking removed | Removed from list, success message shown | ✅ |
+| **Delete Booking** | Click Delete button | Are you sure message pop up? Booking removed | Removed from list, success message shown | ✅ |
 | **Cancel Booking via Token** | Click link in email | Booking cancelled | Status set to “cancelled” in DB | ✅ |
 
 ---
