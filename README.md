@@ -83,16 +83,28 @@ The visual design of Chez Mama is intentionally warm and culturally grounded:
 ### Wireframes
 Initial wireframes were created for:
 - Home page
+
+    ![Hope Page Wireframe](media\menu_images\wireframe_images\chez_mama_homepage.png)
+- Book a Table page
+
+    ![Hope Page Wireframe](media\menu_images\wireframe_images\book_a_table_page.png)
 - Menu page
-- Booking flow
+
+    ![Hope Page Wireframe](media\menu_images\wireframe_images\menu_page.png)
+
+- About us page
+
+    ![Hope Page Wireframe](media\menu_images\wireframe_images/about_us_page.png)
+
 - "My Bookings" dashboard
+
+    ![Hope Page Wireframe](media\menu_images\wireframe_images/my_booking_page.png)
 
 These wireframes guided layout decisions such as:
 - Top navigation bar with clear calls to action (Book a Table, Menu, Contact)
 - Card-based menu items with image + description
 - A focused booking form with only essential inputs
 
-(Note: wireframes are available in the project planning folder and informed the final responsive layout.)
 
 ---
 ## 🧭 Quick Links
