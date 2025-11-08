@@ -1,71 +1,121 @@
 {% extends "base.html" %}
 {% block title %}Our Menu{% endblock %}
 
+
+{% block extra_head %}
+  {% if page_obj and page_obj.object_list %}
+    {% with first=page_obj.object_list.0 %}
+      {% if first.image %}
+        <link rel="preload" as="image" href="{{ first.image.url }}">
+      {% endif %}
+    {% endwith %}
+  {% endif %}
+  <style>
+
+    .menu-card-media {
+      width: 100%;
+      /* Fallback aspect: tune 4/3 or 1/1 to your photos */
+      aspect-ratio: 4/3;
+      overflow: hidden;
+      border-top-left-radius: .5rem;
+      border-top-right-radius: .5rem;
+      background: rgba(0,0,0,.03);
+    }
+    .menu-card-media > img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+  </style>
+{% endblock %}
+
 {% block content %}
-<div class="container mt-4">
+<section class="mt-4">
   <h2 class="mb-3">Our current and available Menu</h2>
 
-  {% if page_obj %}
+  {% if page_obj and page_obj.object_list %}
     <div class="row">
-      {% for item in page_obj %}
+      {% for item in page_obj.object_list %}
         <div class="col-md-4 mb-4">
           <div class="card h-100">
             {% if item.image %}
-              <img
-                src="{{ item.image.url }}"
-                class="card-img-top"
-                alt="{{ item.name }}"
-                loading="lazy">
+              <div class="menu-card-media">
+              
+                {% if item.image.width and item.image.height %}
+                  <img
+                    src="{{ item.image.url }}"
+                    alt="{{ item.name }}"
+                    width="{{ item.image.width }}"
+                    height="{{ item.image.height }}"
+                    loading="lazy"
+                    decoding="async">
+                {% else %}
+                  <img
+                    src="{{ item.image.url }}"
+                    alt="{{ item.name }}"
+                    loading="lazy"
+                    decoding="async">
+                {% endif %}
+              </div>
             {% endif %}
-            <div class="card-body">
-              <h5 class="card-title">{{ item.name }}</h5>
-              <p class="card-text">{{ item.description|truncatechars:100 }}</p>
-              <p class="card-text"><strong>€{{ item.price }}</strong></p>
-              <a href="{% url 'public_booking' %}?menu_item={{ item.id }}"
-                 class="btn btn-sm btn-primary mt-2">
-                Pre-Order Now
-              </a>
+
+            <div class="card-body d-flex flex-column">
+              <h3 class="h5 card-title">{{ item.name }}</h3>
+              <p class="card-text mb-2">{{ item.description|truncatechars:100 }}</p>
+              <p class="card-text fw-semibold mb-3">€{{ item.price }}</p>
+              <div class="mt-auto">
+                <a href="{% url 'public_booking' %}?menu_item={{ item.id }}"
+                   class="btn btn-sm btn-primary">Pre-Order Now</a>
+              </div>
             </div>
           </div>
         </div>
       {% endfor %}
     </div>
 
-    <div class="d-flex justify-content-center mt-4">
-      <nav aria-label="Menu pagination">
-        <ul class="pagination">
-          {% if page_obj.has_previous %}
-            <li class="page-item">
-              <a class="page-link" href="?page=1" aria-label="First page">&laquo; First</a>
-            </li>
-            <li class="page-item">
-              <a class="page-link" href="?page={{ page_obj.previous_page_number }}" aria-label="Previous page">Previous</a>
-            </li>
-          {% else %}
-            <li class="page-item disabled"><span class="page-link" aria-hidden="true">&laquo;</span></li>
-            <li class="page-item disabled"><span class="page-link">Previous</span></li>
-          {% endif %}
-
-          <li class="page-item active" aria-current="page">
-            <span class="page-link">{{ page_obj.number }}</span>
+   
+    <nav class="d-flex justify-content-center mt-4" aria-label="Menu pagination">
+      <ul class="pagination mb-0">
+        {% if page_obj.has_previous %}
+          <li class="page-item">
+            <a class="page-link" href="?page=1" rel="first">&laquo; First</a>
           </li>
+          <li class="page-item">
+            <a class="page-link" href="?page={{ page_obj.previous_page_number }}" rel="prev">Previous</a>
+          </li>
+        {% else %}
+          <li class="page-item disabled" aria-disabled="true">
+            <span class="page-link" tabindex="-1">&laquo; First</span>
+          </li>
+          <li class="page-item disabled" aria-disabled="true">
+            <span class="page-link" tabindex="-1">Previous</span>
+          </li>
+        {% endif %}
 
-          {% if page_obj.has_next %}
-            <li class="page-item">
-              <a class="page-link" href="?page={{ page_obj.next_page_number }}" aria-label="Next page">Next</a>
-            </li>
-            <li class="page-item">
-              <a class="page-link" href="?page={{ page_obj.paginator.num_pages }}" aria-label="Last page">Last &raquo;</a>
-            </li>
-          {% else %}
-            <li class="page-item disabled"><span class="page-link">Next</span></li>
-            <li class="page-item disabled"><span class="page-link" aria-hidden="true">&raquo;</span></li>
-          {% endif %}
-        </ul>
-      </nav>
-    </div>
+        <li class="page-item active" aria-current="page">
+          <span class="page-link">{{ page_obj.number }}</span>
+        </li>
+
+        {% if page_obj.has_next %}
+          <li class="page-item">
+            <a class="page-link" href="?page={{ page_obj.next_page_number }}" rel="next">Next</a>
+          </li>
+          <li class="page-item">
+            <a class="page-link" href="?page={{ page_obj.paginator.num_pages }}" rel="last">Last &raquo;</a>
+          </li>
+        {% else %}
+          <li class="page-item disabled" aria-disabled="true">
+            <span class="page-link" tabindex="-1">Next</span>
+          </li>
+          <li class="page-item disabled" aria-disabled="true">
+            <span class="page-link" tabindex="-1">Last &raquo;</span>
+          </li>
+        {% endif %}
+      </ul>
+    </nav>
   {% else %}
     <p>No menu items found.</p>
   {% endif %}
-</div>
+</section>
 {% endblock %}

@@ -107,9 +107,18 @@ Tool Used: Chrome DevTools Lighthouse (Desktop & Mobile)
 | **SEO**            | 98%   | All pages include titles and meta descriptions        |
 
 Screenshot Example:
-(Include your Lighthouse screenshot here when submitting to Code Institute)
 
+- Home page accessibility
 
+    ![home page accessibilty check](./media/validation_images/lighthouse_validation/home_page_validated_lighthouse.png)
+
+    ![](./media/validation_images/lighthouse_validation/book_page_validated_lighthouse.png)
+
+    ![](./media/validation_images/lighthouse_validation/about_us_page_lighthouse_validated.png)
+
+    ![](./media/validation_images/lighthouse_validation/contact_us_page_validated_lighthouse.png)
+
+    ![](./media/validation_images/lighthouse_validation/my_booking_page_validated_lighthouse.png)
 
 
 
