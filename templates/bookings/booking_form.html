@@ -1,70 +1,70 @@
-{% extends "base.html" %} {% load static %} {% block title %}Book a
-Table{% endblock %} {% block content %}
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Book a Table{% endblock %}
 
+{% block content %}
 <div class="container">
   <h2 class="mb-4">Book a Table</h2>
+
   {% if menu_item %}
-  <div class="alert alert-info">
-    You’re pre-ordering: <strong>{{ menu_item.name }}</strong> as one of your orders Items
-  </div>
+    <div class="alert alert-info">
+      You’re pre-ordering: <strong>{{ menu_item.name }}</strong> as one of your orders Items
+    </div>
   {% endif %}
-  
+
   {% if messages %}
-  <div class="mb-3">
-    {% for message in messages %}
-    <div class="alert alert-{{ message.tags }}">{{ message }}</div>
-    {% endfor %}
-  </div>
+    <div class="mb-3">
+      {% for message in messages %}
+        <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+      {% endfor %}
+    </div>
   {% endif %}
 
   {% if menu_item %}
-  <div class="alert alert-info">
-      <strong>Pre-order selected:</strong>
-      {{ menu_item.name }}
+    <div class="alert alert-info">
+      <strong>Pre-order selected:</strong> {{ menu_item.name }}
       {% if menu_item.description %}
-          <div class="small text-muted">{{ menu_item.description }}</div>
-      {% endif %}
-  </div>
-  {% endif %}
-
-
-  <form method="post" novalidate>
-    {% csrf_token %} {% for field in form %}
-    <div class="mb-3">
-      <label for="{{ field.id_for_label }}" class="form-label"
-        >{{ field.label }}</label
-      >
-      {{ field }} {% if field.help_text %}
-      <div class="form-text">{{ field.help_text }}</div>
-      {% endif %} {% if field.errors %}
-      <div class="text-danger small">{{ field.errors|striptags }}</div>
+        <div class="small text-muted">{{ menu_item.description }}</div>
       {% endif %}
     </div>
-    {% endfor %}
+  {% endif %}
 
+  <form method="post" novalidate>
+    {% csrf_token %}
+    {% for field in form %}
+      <div class="mb-3">
+        <label for="{{ field.id_for_label }}" class="form-label">{{ field.label }}</label>
+        {{ field }}
+        {% if field.help_text %}
+          <div id="{{ field.id_for_label }}_helptext" class="form-text">{{ field.help_text }}</div>
+        {% endif %}
+        {% if field.errors %}
+          <div class="text-danger small">{{ field.errors|striptags }}</div>
+        {% endif %}
+      </div>
+    {% endfor %}
     <button type="submit" class="btn btn-primary">Book Now</button>
   </form>
 
   {% if no_availability %}
-  <div class="alert alert-warning mt-4">
-    Sorry, no tables are available around your selected time. Try a different
-    time slot or reduce the number of guests.
-  </div>
+    <div class="alert alert-warning mt-4">
+      Sorry, no tables are available around your selected time. Try a different time slot or reduce the number of guests.
+    </div>
   {% elif available_tables %}
-  <div class="alert alert-success mt-4">
-    Good news! A table is available. You can proceed with booking.
-  </div>
-  {% endif %} {% if conflicting_table_ids %}
-  <div class="alert alert-info mt-3">
-    <strong>Note:</strong> The following tables are currently booked during this
-    time:
-    <ul>
-      {% for table_id in conflicting_table_ids %}
-      <li>Table ID: {{ table_id }}</li>
-      {% endfor %}
-    </ul>
-  </div>
+    <div class="alert alert-success mt-4">
+      Good news! A table is available. You can proceed with booking.
+    </div>
+  {% endif %}
+
+  {% if conflicting_table_ids %}
+    <div class="alert alert-info mt-3">
+      <strong>Note:</strong> The following tables are currently booked during this time:
+      <ul>
+        {% for table_id in conflicting_table_ids %}
+          <li>Table ID: {{ table_id }}</li>
+        {% endfor %}
+      </ul>
+    </div>
   {% endif %}
 </div>
-
 {% endblock %}

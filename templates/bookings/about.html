@@ -4,34 +4,47 @@
 
 {% block content %}
 <div class="container py-5">
-    <div class="row mb-4">
-        <div class="col-md-8 offset-md-2 text-center">
-            <h1 class="mb-3">About Chez Mama</h1>
-            <img src="{% static 'bookings/images/restaurant.jpg' %}" alt="Chez Mama Restaurant" class="img-fluid rounded shadow mb-4" style="max-height: 400px; object-fit: cover;">
-            <p class="lead">
-                Welcome to <strong>Chez Mama</strong> — where passion meets the plate.
-            </p>
-            <p>
-                Founded with love and tradition, Chez Mama is a cozy, family-owned restaurant
-                inspired by the warm hospitality of African and French kitchens. Our dishes are
-                crafted from fresh, local ingredients, blending home-cooked comfort with
-                rich culinary heritage.
-            </p>
-            <p>
-                Whether you're sharing stories over a plate of grilled fish or celebrating a special
-                moment, Chez Mama is your home away from home.
-            </p>
-            <hr>
-            <h5>Our Promise</h5>
-            <ul class="list-unstyled">
-                <li>✅ Fresh ingredients, every day</li>
-                <li>✅ Warm and welcoming atmosphere</li>
-                <li>✅ Service with a personal touch</li>
-            </ul>
-            <p class="mt-4">
-                We can’t wait to serve you. <a href="{% url 'public_booking' %}">Book a table</a> and experience the flavors of home.
-            </p>
-        </div>
+  <div class="row mb-4">
+    <div class="col-md-8 offset-md-2 text-center">
+      <h1 class="mb-3">About Chez Mama</h1>
+
+      <img
+        src="{% static 'bookings/images/restaurant.jpg' %}"
+        alt="Chez Mama Restaurant dining interior"   
+        class="img-fluid rounded shadow mb-4"
+        style="max-height: 400px; object-fit: cover;"
+        loading="lazy">                              
+
+      <p class="lead">
+        Welcome to <strong>Chez Mama</strong> — where passion meets the plate.
+      </p>
+
+      <p>
+        Founded with love and tradition, Chez Mama is a cozy, family-owned restaurant
+        inspired by the warm hospitality of African and French kitchens. Our dishes are
+        crafted from fresh, local ingredients, blending home-cooked comfort with
+        rich culinary heritage.
+      </p>
+
+      <p>
+        Whether you're sharing stories over a plate of grilled fish or celebrating a special
+        moment, Chez Mama is your home away from home.
+      </p>
+
+      <hr>
+      <h5>Our Promise</h5>
+      <ul class="list-unstyled">
+        <li>✅ Fresh ingredients, every day</li>
+        <li>✅ Warm and welcoming atmosphere</li>
+        <li>✅ Service with a personal touch</li>
+      </ul>
+
+      <p class="mt-4">
+        We can’t wait to serve you.
+        <a href="{% url 'public_booking' %}">Book a table</a>
+        and experience the flavors of home.
+      </p>
     </div>
+  </div>
 </div>
 {% endblock %}

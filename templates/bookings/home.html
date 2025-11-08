@@ -32,7 +32,7 @@
     <a href="{% url 'menu' %}" class="btn btn-outline-primary btn-lg">Explore Our Menu</a>
     <a href="{% url 'public_booking' %}" class="btn btn-primary btn-lg ms-3">Book a Table</a>
   </div>
-<hr>
+  <hr>
   <div class="row text-center mb-5">
     <div class="col-md-4">
       <h3>🍽 Authentic Flavors</h3>
@@ -57,7 +57,8 @@
       <h2 class="text-center mb-4">We Value Your Feedback</h2>
       <div class="card shadow-sm">
         <div class="card-body">
-          <form method="post" action="">
+          <!-- same-page POST: no empty action attribute -->
+          <form method="post">
             {% csrf_token %}
             <div class="mb-3">
               <label for="{{ form.rating.id_for_label }}" class="form-label">{{ form.rating.label }}</label>
@@ -94,7 +95,13 @@
   <div id="testimonialCarousel" class="carousel slide" data-bs-ride="carousel">
     <div class="carousel-indicators">
       {% for fb in testimonials %}
-        <button type="button" data-bs-target="#testimonialCarousel" data-bs-slide-to="{{ forloop.counter0 }}" class="{% if forloop.first %}active{% endif %}" aria-current="{% if forloop.first %}true{% endif %}" aria-label="Slide {{ forloop.counter }}"></button>
+        <button
+          type="button"
+          data-bs-target="#testimonialCarousel"
+          data-bs-slide-to="{{ forloop.counter0 }}"
+          {% if forloop.first %}class="active" aria-current="true"{% endif %}
+          aria-label="Slide {{ forloop.counter }}">
+        </button>
       {% endfor %}
     </div>
     <div class="carousel-inner">
@@ -103,7 +110,9 @@
         <div class="d-flex justify-content-center">
           <div class="card mx-auto" style="max-width:800px; width:100%;">
             <div class="card-body text-center">
-              <h5 class="card-title">{{ fb.customer.name }}</h5>
+              {% if fb.customer and fb.customer.name %}
+                <h5 class="card-title">{{ fb.customer.name }}</h5>
+              {% endif %}
               <p class="card-text">"{{ fb.comments|default:'No comments.' }}"</p>
             </div>
             <div class="card-footer text-muted text-center">

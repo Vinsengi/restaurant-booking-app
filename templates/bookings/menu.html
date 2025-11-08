@@ -11,14 +11,20 @@
         <div class="col-md-4 mb-4">
           <div class="card h-100">
             {% if item.image %}
-              <img src="{{ item.image.url }}" class="card-img-top" alt="{{ item.name }}">
+              <img
+                src="{{ item.image.url }}"
+                class="card-img-top"
+                alt="{{ item.name }}"
+                loading="lazy">
             {% endif %}
             <div class="card-body">
               <h5 class="card-title">{{ item.name }}</h5>
               <p class="card-text">{{ item.description|truncatechars:100 }}</p>
               <p class="card-text"><strong>€{{ item.price }}</strong></p>
-              <a href="{% url 'public_booking' %}?menu_item={{ item.id }}" class="btn btn-sm btn-primary mt-2">Pre-Order Now</a>
-
+              <a href="{% url 'public_booking' %}?menu_item={{ item.id }}"
+                 class="btn btn-sm btn-primary mt-2">
+                Pre-Order Now
+              </a>
             </div>
           </div>
         </div>
@@ -26,32 +32,34 @@
     </div>
 
     <div class="d-flex justify-content-center mt-4">
-      <nav>
+      <nav aria-label="Menu pagination">
         <ul class="pagination">
           {% if page_obj.has_previous %}
             <li class="page-item">
-              <a class="page-link" href="?page=1">&laquo; First</a>
+              <a class="page-link" href="?page=1" aria-label="First page">&laquo; First</a>
             </li>
             <li class="page-item">
-              <a class="page-link" href="?page={{ page_obj.previous_page_number }}">Previous</a>
+              <a class="page-link" href="?page={{ page_obj.previous_page_number }}" aria-label="Previous page">Previous</a>
             </li>
           {% else %}
-            <li class="page-item disabled"><span class="page-link">&laquo;</span></li>
+            <li class="page-item disabled"><span class="page-link" aria-hidden="true">&laquo;</span></li>
             <li class="page-item disabled"><span class="page-link">Previous</span></li>
           {% endif %}
 
-          <li class="page-item active"><span class="page-link">{{ page_obj.number }}</span></li>
+          <li class="page-item active" aria-current="page">
+            <span class="page-link">{{ page_obj.number }}</span>
+          </li>
 
           {% if page_obj.has_next %}
             <li class="page-item">
-              <a class="page-link" href="?page={{ page_obj.next_page_number }}">Next</a>
+              <a class="page-link" href="?page={{ page_obj.next_page_number }}" aria-label="Next page">Next</a>
             </li>
             <li class="page-item">
-              <a class="page-link" href="?page={{ page_obj.paginator.num_pages }}">Last &raquo;</a>
+              <a class="page-link" href="?page={{ page_obj.paginator.num_pages }}" aria-label="Last page">Last &raquo;</a>
             </li>
           {% else %}
             <li class="page-item disabled"><span class="page-link">Next</span></li>
-            <li class="page-item disabled"><span class="page-link">&raquo;</span></li>
+            <li class="page-item disabled"><span class="page-link" aria-hidden="true">&raquo;</span></li>
           {% endif %}
         </ul>
       </nav>
