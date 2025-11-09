@@ -65,6 +65,32 @@ All validations were performed between **October–November 2025** on the latest
 - The file was confirmed to be free of invalid declarations and duplicate selectors.
 
 
+
+## Lighthouse Checks
+
+**Accessibility Checks using chrome Dev tool - Lighthouse**
+- Home page accessibility
+
+    ![home page accessibilty check](./media/validation_images/lighthouse_validation/home_page_validated_lighthouse.png)
+
+    ![](./media/validation_images/lighthouse_validation/book_page_validated_lighthouse.png)
+
+    ![](./media/validation_images/lighthouse_validation/about_us_page_lighthouse_validated.png)
+
+    ![](./media/validation_images/lighthouse_validation/contact_us_page_validated_lighthouse.png)
+
+    ![](./media/validation_images/lighthouse_validation/my_booking_page_validated_lighthouse.png)
+
+♿ Accessibility
+
+
+ Chrome DevTools Lighthouse (Desktop & Mobile)
+| Category           | Score | Notes                                                 |
+| ------------------ | ----- | ----------------------------------------------------- |
+| **Performance**    | > 90%   | Static assets optimized via Whitenoise                |
+| **Accessibility**  | > 90%   | Semantic HTML & ARIA roles correctly applied          |
+| **Best Practices** | > 90%  | Secure HTTPS, valid image alt text, and clean console |
+| **SEO**            | > 90%   | All pages include titles and meta descriptions        |
 ---
 
 ## 🐍 Python / PEP8 Validation
@@ -96,33 +122,7 @@ Notes:
 
 - Minor line-length warnings (E501) ignored in long query chains for readability.
 
-♿ Accessibility (Lighthouse Audit)
-
-Tool Used: Chrome DevTools Lighthouse (Desktop & Mobile)
-| Category           | Score | Notes                                                 |
-| ------------------ | ----- | ----------------------------------------------------- |
-| **Performance**    | 93%   | Static assets optimized via Whitenoise                |
-| **Accessibility**  | 96%   | Semantic HTML & ARIA roles correctly applied          |
-| **Best Practices** | 100%  | Secure HTTPS, valid image alt text, and clean console |
-| **SEO**            | 98%   | All pages include titles and meta descriptions        |
-
-Screenshot Example:
-
-- Home page accessibility
-
-    ![home page accessibilty check](./media/validation_images/lighthouse_validation/home_page_validated_lighthouse.png)
-
-    ![](./media/validation_images/lighthouse_validation/book_page_validated_lighthouse.png)
-
-    ![](./media/validation_images/lighthouse_validation/about_us_page_lighthouse_validated.png)
-
-    ![](./media/validation_images/lighthouse_validation/contact_us_page_validated_lighthouse.png)
-
-    ![](./media/validation_images/lighthouse_validation/my_booking_page_validated_lighthouse.png)
-
-
-
-
+   
 
 🌐 Responsiveness Validation
 
@@ -138,7 +138,7 @@ Tool Used: Chrome DevTools Responsive Viewer
 ✅ All layouts adjusted properly using Bootstrap 5.3 grid system and Flexbox.
 No horizontal scroll or overlapping elements observed.
 
-🧱 Deployment Validation
+
 | Test                           | Expected                     | Result |
 | ------------------------------ | ---------------------------- | ------ |
 | Heroku app loads without error | Page served successfully     | ✅ Pass |
