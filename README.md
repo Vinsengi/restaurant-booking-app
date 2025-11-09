@@ -165,27 +165,8 @@ Images are stored and served via Cloudinary with pagination for smooth browsing.
 
 ---
 
-## 🗂 Project Structure
 
-```bash
-restaurant_booking/
-│
-├── bookings/              # Main app
-│   ├── migrations/
-│   ├── models.py
-│   ├── views.py
-│   ├── urls.py
-│   └── templates/bookings/
-│
-├── media/                 # Dish images
-├── static/                # CSS, JS, images
-├── .env                   # Environment secrets (not committed)
-├── Procfile
-├── requirements.txt
-└── manage.py
-```
 
----
 ## 🧩 Agile Development Approach
 
 The project followed Agile methodology with iterative sprints and continuous feedback:
