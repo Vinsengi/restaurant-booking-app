@@ -20,8 +20,6 @@ import cloudinary.api
 
 from dotenv import load_dotenv
 
-# Importing dj_database_url to handle database URLs
-# and os for environment variable handling
 
 load_dotenv()  
 
@@ -167,16 +165,6 @@ else:
             "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
         },
     }
-# Modern Django 5.x storage configuration
-# STORAGES = {
-#     "default": {
-#         "BACKEND": "cloudinary_storage.storage.MediaCloudinaryStorage",
-#     },
-#     "staticfiles": {
-#         "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
-#     },
-# }
-
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
